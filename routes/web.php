@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,7 @@ Route::post("/validate-authenticate",[FrontendController::class,"validateAuthent
 Route::get("/evaluation",[FrontendController::class,"evaluation"])->name("evaluation");
 Route::post("/submit-reviews",[FrontendController::class,"submitReviews"])->name("submit-reviews");
 
-Route::group(["middleware" => "role:physician"],function(){
+Route::group(["middleware" => ["role:physician","role:admin"]],function(){
     Route::get("/",[FrontendController::class,"index"])->name("home");
     Route::get("/start",[FrontendController::class,"start"])->name("start");
     Route::get("/invite",[FrontendController::class,"invite"])->name("invite");
@@ -31,5 +32,10 @@ Route::group(["middleware" => "role:physician"],function(){
     Route::post("/update-physician",[FrontendController::class,"updatePhysician"])->name("update-physician");
 
     Route::post("/send-invite-email",[FrontendController::class,"sendInviteEmail"])->name("send-invite-email");
+});
+Route::group(["middleware" => "role:admin"],function(){
+    Route::get("/admin",[AdminController::class,"index"])->name("admin");
+    Route::get("/all-physicians",[AdminController::class,"getAllPhysicians"])->name("all.physicians");
 
+    
 });

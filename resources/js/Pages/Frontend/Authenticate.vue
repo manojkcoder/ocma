@@ -44,6 +44,11 @@
                         toast(data.message,{"type": data.status,"autoClose": 3000,"transition": "slide"});
                         if(data.status == "success"){
                             $vm.form = {password: ""};
+                            if(data.authType == "physician"){
+                                $vm.$inertia.visit(route('start'));
+                            }else if(data.authType == "admin"){
+                                $vm.$inertia.visit(route('admin'));
+                            }
                         }
                     });
                 }catch(e){

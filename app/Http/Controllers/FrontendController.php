@@ -16,13 +16,13 @@ class FrontendController extends Controller
         return Inertia::render("Frontend/Home",compact("license"));
     }
     public function authenticate(Request $request){
-        $isAuthenticate = $request->session()->get("isAuthenticate");
-        $authType = $request->session()->get("authType");
-        if(!empty($isAuthenticate) && !empty($authType)){
-            if($authType == "physician"){
-                return Redirect::route("start");
-            }
-        }
+        // $isAuthenticate = $request->session()->get("isAuthenticate");
+        // $authType = $request->session()->get("authType");
+        // if(!empty($isAuthenticate) && !empty($authType)){
+        //     if($authType == "physician"){
+        //         return Redirect::route("start");
+        //     }
+        // }
         return Inertia::render("Frontend/Authenticate");
     }
     public function validateAuthenticate(Request $request){
