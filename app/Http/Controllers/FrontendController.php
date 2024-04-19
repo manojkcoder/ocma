@@ -49,12 +49,19 @@ class FrontendController extends Controller
     }
     public function evaluation(Request $request){
         $physician = "";
+        $hasRating = false;
         $nominationId = !empty($request->id) ? base64_decode($request->id) : "";
         $type = !empty($request->type) ? base64_decode($request->type) : "";
         if($nominationId){
             $physician = Physician::where("id",$nominationId)->first();
+            if($physician){
+                $rating = Review::where("nomination_id",$physician->id)->first();
+                if($rating){
+                    $hasRating = true;
+                }
+            }
         }
-        return Inertia::render("Frontend/Evaluation",compact("nominationId","type","physician"));
+        return Inertia::render("Frontend/Evaluation",compact("nominationId","type","physician","hasRating"));
     }
     public function submitReviews(Request $request){
         $review = new Review($request->all());

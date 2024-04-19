@@ -84,10 +84,10 @@
             <meta name="description" content="OCMA">
         </Head>
         <div class="rt-header py-4 flex">
-            <div class="sm:container mx-auto flex items-center gap-20">
+            <div class="mx-auto w-full max-w-[1170px] flex items-start gap-20">
                 <img src="/assets/images/new-logo.png" class="max-w-40"/>
                 <div class="text-center">
-                    <h1 class="text-2xl text-blue uppercase font-medium leading-7 max-w-[700px]">Selection Criteria for the Orange County Physicians of Excellence Honor</h1>
+                    <h1 class="text-2xl text-blue uppercase font-medium leading-7 max-w-[680px]">Selection Criteria for the Orange County Physicians of Excellence Honor</h1>
                 </div>
             </div>
         </div>

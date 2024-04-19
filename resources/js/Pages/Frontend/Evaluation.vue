@@ -1,8 +1,13 @@
 <script>
     import axios from "axios";
+    import moment from "moment";
     export default {
-        props: ['physician','nominationId','type'],
+        props: ['physician','hasRating','nominationId','type'],
         data(){
+            let deadline = import.meta.env.VITE_DEADLINE;
+            let endTime = moment(deadline).unix();
+            let nowTime = moment().unix();
+            let hasExpired = ((nowTime >= endTime) ? true : false);
             return {
                 timer: null,
                 form: {
@@ -21,8 +26,12 @@
                     rating_patients: "",
                     rating_skills: ""
                 },
+                isSubmit: false,
                 ratings: [1,2,3,4,5,6,7,8,9,10],
-                errors: []
+                errors: [],
+                deadline: moment(deadline).format("MMM DD, YYYY"),
+                hasExpired: hasExpired,
+                fullname: this.physician ? ((this.physician.first_name || '') + ' ' + (this.physician.last_name || '')) : ''
             }
         },
         methods: {
@@ -96,23 +105,16 @@
                 return true;
             },
             handleSubmit: function(){
+                let $vm = this;
                 try{
                     document.getElementById("rt-custom-loader").style.display = "block";
-                    axios.post(this.route('submit-reviews'),this.form).then(({data}) => {
+                    axios.post($vm.route('submit-reviews'),$vm.form).then(({data}) => {
                         document.getElementById("rt-custom-loader").style.display = "none";
                         toast(data.message,{"type": data.status,"autoClose": 3000,"transition": "slide"});
+                        $vm.isSubmit = true;
                     });
                 }catch(e){
                     document.getElementById("rt-custom-loader").style.display = "none";
-                }
-            },
-            handleAutoSave: function(){
-                try{
-                    axios.post(this.route('update-physician'),this.form).then(({data}) => {
-                        toast(data.message,{"type": data.status,"autoClose": 3000,"transition": "slide"});
-                    });
-                }catch(e){
-                    console.log({e});
                 }
             }
         }
@@ -131,32 +133,41 @@
             <meta name="description" content="OCMA description">
         </Head>
         <div class="rt-header py-4 flex">
-            <div class="sm:container mx-auto flex items-center gap-20">
+            <div class="mx-auto w-full max-w-[1170px] flex items-start gap-20">
                 <img src="/assets/images/new-logo.png" class="max-w-40"/>
-                <div class="text-center w-full">
-                    <h1 v-if="type == 'same'" class="text-2xl text-blue uppercase font-medium leading-7 max-w-[700px] w-full">Physician Evalution Form <br>(Same Specialty as Nominee)</h1>
-                    <h1 v-else class="text-2xl text-blue uppercase font-medium leading-7 max-w-[700px] w-full">Physician Evalution Form <br>(Outside the Nominee's Specialty)</h1>
-                    <h2 class="text-xl text-light-black uppercase font-medium leading-7 max-w-[700px] w-full">Orange Coast Magazine Physician of Excellence</h2>
-					<p class="text-orange text-base font-medium max-w-[700px] w-full">Must be completed by a physician practicing in Orange County, California</p>
+                <div class="text-center">
+                    <h1 v-if="type == 'same'" class="text-2xl text-blue uppercase font-medium leading-7 max-w-[680px] w-full">Physician Evalution Form <br>(Same Specialty as Nominee)</h1>
+                    <h1 v-else class="text-2xl text-blue uppercase font-medium leading-7 max-w-[680px] w-full">Physician Evalution Form <br>(Outside the Nominee's Specialty)</h1>
+                    <h2 class="text-xl text-light-black uppercase font-medium leading-7 max-w-[680px] w-full">Orange Coast Magazine Physician of Excellence</h2>
+					<p class="text-orange text-base font-medium max-w-[680px] w-full">Must be completed by a physician practicing in Orange County, California</p>
                 </div>
             </div>
         </div>
-        <form @submit.prevent="onSubmit">
+        <div class="py-10 px-4 flex items-center justify-center" v-if="hasExpired">
+            <p class="text-xl font-medium">Evaluations now have been closed.</p>
+        </div>
+        <div class="py-10 px-4 flex items-center justify-center" v-else-if="hasRating">
+            <p class="text-xl font-medium">Review Submissions have been closed for this nomination.</p>
+        </div>
+        <div class="py-10 px-4 flex items-center justify-center" v-else-if="isSubmit">
+            <p class="text-xl font-medium">The information has been received successfully.</p>
+        </div>
+        <form @submit.prevent="onSubmit" v-else-if="physician">
             <div class="flex py-10 bg-white">
-                <div class="max-w-5xl mx-auto flex flex-col items-center gap-y-5">
-                    <p>Dr.&nbsp;<input type="text" name="doctor_name" :value="physician.first_name + ' ' + physician.last_name" readonly style="padding:0;border:none;border-bottom:1px solid;"/> has been nominated for the distinction as an Orange County Physician of Excellence which will be published in <span class="text-orange">Orange Coast Magazine's</span> January 2024 issue. As part of the process, each nominee is required to submit evaluations by their peers. You have been selected by the nominee to submit an evaluation on his/her behalf.<br/><br/>Please complete every question or describe why you are not able to comment about the question. Failure to address a question may result in the physician not being considered for the award. Your responses are <span class="text-orange">strictly confidential</span> and will not be shared with the nominated physician.</p>
+                <div class="max-w-[1170px] mx-auto flex flex-col items-center gap-y-5">
+                    <p>Dr.&nbsp;<input type="text" name="doctor_name" :value="fullname" readonly style="padding:0;border:none;border-bottom:1px solid;"/> has been nominated for the distinction as an Orange County Physician of Excellence which will be published in <span class="text-orange">Orange Coast Magazine's</span> January 2024 issue. As part of the process, each nominee is required to submit evaluations by their peers. You have been selected by the nominee to submit an evaluation on his/her behalf.<br/><br/>Please complete every question or describe why you are not able to comment about the question. Failure to address a question may result in the physician not being considered for the award. Your responses are <span class="text-orange">strictly confidential</span> and will not be shared with the nominated physician.</p>
                 </div>
             </div>
             <div class="flex py-10 bg-grey">
-                <div class="max-w-5xl w-full mx-auto flex flex-col items-center gap-y-5">
+                <div class="max-w-[1170px] w-full mx-auto flex flex-col items-center gap-y-5">
                     <div class="flex flex-col items-center">
-                        <h2 class="text-2xl text-blue uppercase font-semibold">This evaluation must be received by June 9, 2023.</h2>
+                        <h2 class="text-2xl text-blue uppercase font-semibold">This evaluation must be received by {{deadline}}.</h2>
                         <p class="text-xl mb-5">Please rate your answer according to these general guidelines.</p>
                         <p class="text-xl text-blue">1=Poor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3=Satisfactory&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;5=Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7=Very Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10=Excellent</p>
                     </div>
                     <div class="flex w-full items-center justify-between gap-8">
                         <label class="text-md text-light-black font-medium flex-1 text-right">Reputation within the community</label>
-                        <div class="flex items-center gap-5 w-80 shrink-0 relative">
+                        <div class="flex items-center gap-5 flex-1 shrink-0 relative">
                             <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
                                 <span className="flex items-center gap-1">
                                     <svg class="fill-light-black shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20" @click="updateRating('rating_community',rating)"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
@@ -169,7 +180,7 @@
                     </div>
                     <div class="flex w-full items-center justify-between gap-8">
                         <label class="text-md text-light-black font-medium flex-1 text-right">Clinical skills and judgment</label>
-                        <div class="flex items-center gap-5 w-80 shrink-0 relative">
+                        <div class="flex items-center gap-5 flex-1 shrink-0 relative">
                             <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
                                 <span className="flex items-center gap-1">
                                     <svg class="fill-light-black shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20" @click="updateRating('rating_judgement',rating)"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
@@ -182,7 +193,7 @@
                     </div>
                     <div class="flex w-full items-center justify-between gap-8">
                         <label class="text-md text-light-black font-medium flex-1 text-right">Relationships with other physicians and healthcare professionals</label>
-                        <div class="flex items-center gap-5 w-80 shrink-0 relative">
+                        <div class="flex items-center gap-5 flex-1 shrink-0 relative">
                             <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
                                 <span className="flex items-center gap-1">
                                     <svg class="fill-light-black shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20" @click="updateRating('rating_healthcare',rating)"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
@@ -195,7 +206,7 @@
                     </div>
                     <div class="flex w-full items-center justify-between gap-8">
                         <label class="text-md text-light-black font-medium flex-1 text-right">Relationships with patients</label>
-                        <div class="flex items-center gap-5 w-80 shrink-0 relative">
+                        <div class="flex items-center gap-5 flex-1 shrink-0 relative">
                             <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
                                 <span className="flex items-center gap-1">
                                     <svg class="fill-light-black shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20" @click="updateRating('rating_patients',rating)"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
@@ -208,7 +219,7 @@
                     </div>
                     <div class="flex w-full items-center justify-between gap-8">
                         <label class="text-md text-light-black font-medium flex-1 text-right">Leadership skills</label>
-                        <div class="flex items-center gap-5 w-80 shrink-0 relative">
+                        <div class="flex items-center gap-5 flex-1 shrink-0 relative">
                             <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
                                 <span className="flex items-center gap-1">
                                     <svg class="fill-light-black shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20" @click="updateRating('rating_skills',rating)"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
@@ -238,7 +249,7 @@
                 </div>
             </div>
             <div class="flex py-10 bg-white mb-8">
-                <div class="max-w-5xl mx-auto flex flex-col items-center gap-y-5">
+                <div class="max-w-[1170px] w-full mx-auto flex flex-col items-center gap-y-5">
                     <h2 class="text-2xl text-blue uppercase font-semibold text-center">The information below is required in order for your evaluation to be considered</h2>
                     <div class="flex w-full gap-8">
                         <div class="flex flex-col flex-1">
@@ -268,10 +279,13 @@
                         <button class="rounded-lg bg-blue text-white px-8 py-2 text-md uppercase font-medium">Submit</button>
                     </div>
                     <div class="bg-grey flex flex-col justify-center items-center py-6 px-6">
-                        <p class="text-xl text-light-black">* Incomplete forms will not be processed. This form must be received by <span class="text-orange">June 9, 2023</span> to be considered for this honor.</p>
+                        <p class="text-xl text-light-black">* Incomplete forms will not be processed. This form must be received by <span class="text-orange">{{deadline}}</span> to be considered for this honor.</p>
                     </div>
                 </div>
             </div>
         </form>
+        <div class="py-10 px-4 flex items-center justify-center" v-else>
+            <p class="text-xl font-medium">Incorrect URL, Please check the URL.</p>
+        </div>
     </FrontendLayout>
 </template>

@@ -1,8 +1,13 @@
 <script>
     import axios from "axios";
+    import moment from "moment";
     export default {
         props: ['physician'],
         data(){
+            let deadline = import.meta.env.VITE_DEADLINE;
+            let endTime = moment(deadline).unix();
+            let nowTime = moment().unix();
+            let hasExpired = ((nowTime >= endTime) ? true : false);
             return {
                 timer: null,
                 form: {
@@ -38,12 +43,14 @@
                     participation_activities: this.physician.participation_activities || [{position: "",other_position: "",from: "",to: "",description: ""}],
                     other_activities: this.physician.other_activities || [{title: "",from: "",to: "",description: ""}]
                 },
-                errors: []
+                errors: [],
+                deadline: moment(deadline).format("MMM DD, YYYY"),
+                hasExpired: hasExpired
             }
         },
         mounted(){
             this.timer = setInterval(() => {
-                this.handleAutoSave();
+                this.handleAutoSave(false);
             },20000);
         },
         beforeDestroy(){
@@ -203,10 +210,15 @@
                     console.log({e});
                 }
             },
-            handleAutoSave: function(){
+            handleAutoSave: function(redirect = true){
+                let $vm = this;
                 try{
-                    axios.post(this.route('update-physician'),this.form).then(({data}) => {
+                    axios.post($vm.route('update-physician'),$vm.form).then(({data}) => {
                         toast(data.message,{"type": data.status,"autoClose": 3000,"transition": "slide"});
+                        if(redirect){
+                            clearInterval(this.timer);
+                            $vm.$inertia.visit(route('invite'));
+                        }
                     });
                 }catch(e){
                     console.log({e});
@@ -229,16 +241,27 @@
             <meta name="description" content="OCMA description">
         </Head>
         <div class="rt-header py-4 flex">
-            <div class="sm:container mx-auto flex items-center gap-20">
+            <div class="mx-auto w-full max-w-[1170px] flex items-start gap-20">
                 <img src="/assets/images/new-logo.png" class="max-w-40"/>
                 <div class="text-center">
-                    <h1 class="text-2xl text-blue uppercase font-medium leading-7 max-w-[700px]">Selection Criteria for the Orange County Physicians of Excellence Honor</h1>
+                    <h1 class="text-2xl text-blue uppercase font-medium leading-7 max-w-[680px]">Selection Criteria for the Orange County Physicians of Excellence Honor</h1>
                 </div>
             </div>
         </div>
-        <form @submit.prevent="handleAutoSave">
+        <div class="py-10 px-4 flex items-center justify-center" v-if="hasExpired">
+            <p class="text-xl font-medium">Registration has been closed.</p>
+        </div>
+        <form @submit.prevent="handleAutoSave" v-else>
             <div class="flex py-10 bg-white">
-                <div class="max-w-5xl mx-auto flex flex-col items-center gap-y-5">
+                <div class="max-w-[1170px] mx-auto flex flex-col items-center gap-y-5">
+                    <div class="w-full">
+                        <a :href="route('invite')" class="text-blue text-left uppercase font-semibold inline-block">
+                            <div class="flex items-center gap-x-1">
+                                <svg class="fill-blue" viewBox="0 0 24 24" width="24" height="24"><path d="M19,11H9l3.293-3.293L10.879,6.293,6.586,10.586a2,2,0,0,0,0,2.828l4.293,4.293,1.414-1.414L9,13H19Z"/></svg>
+                                Back To Home
+                            </div>
+                        </a>
+                    </div>
                     <h1 class="text-2xl text-blue uppercase font-semibold mb-4">Please Check your answer to each statement listed below</h1>
                     <div class="flex w-full items-center justify-between gap-8">
                         <label class="text-xl text-blue">I am board certified by an ABMS-member Board or an American Board of Osteopathic Medical Specialties-member Board or an equivalency Board recognized by the Medical Board of California or Osteopathic Medical Board of California</label>
@@ -385,7 +408,7 @@
                 </div>
             </div>
             <div class="flex py-10 bg-white mb-8">
-                <div class="max-w-5xl mx-auto flex flex-col items-center gap-y-5">
+                <div class="max-w-[1170px] mx-auto flex flex-col items-center gap-y-5">
                     <h2 class="text-xl text-blue text-center uppercase font-semibold mb-4">Physician nominee should meet at least 2 of the following 4 criteria. <br>Words like "see attached C.V" will not be accepted. Please spell out any names of roles, committees and organizations. Abbreviations will not be accepted unless commonly known.</h2>
                     <div class="flex flex-col w-full">
                         <p class="text-xl relative pl-8 items-center mb-3 font-semibold"><span class="w-6 h-6 flex items-center justify-center bg-orange absolute left-0 text-base text-white rounded-3xl mt-1">1</span>Physician Leadership</p>
