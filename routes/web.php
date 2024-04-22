@@ -19,7 +19,7 @@ Route::post("/validate-authenticate",[FrontendController::class,"validateAuthent
 Route::get("/evaluation",[FrontendController::class,"evaluation"])->name("evaluation");
 Route::post("/submit-reviews",[FrontendController::class,"submitReviews"])->name("submit-reviews");
 
-Route::group(["middleware" => ["role:physician","role:admin"]],function(){
+Route::group(["middleware" => "role:physician|admin",],function(){
     Route::get("/",[FrontendController::class,"index"])->name("home");
     Route::get("/start",[FrontendController::class,"start"])->name("start");
     Route::get("/invite",[FrontendController::class,"invite"])->name("invite");

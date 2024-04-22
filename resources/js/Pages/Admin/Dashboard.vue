@@ -60,7 +60,7 @@
                 </div>
             </div>
         </div>
-        <div class="mx-auto w-full max-w-[1440px] flex flex-col pt-10">
+        <div class="mx-auto w-full max-w-[1440px] flex flex-col pt-10 px-4">
             <h2 class="text-2xl text-light-black uppercase font-medium leading-7 mb-6 text-center">Admin Panel</h2>
             <!-- <v-text-field v-model="search" label="Search by Name, Email, and Medical license number" single-line hide-details></v-text-field> -->
             <v-data-table-server

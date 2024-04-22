@@ -4,10 +4,11 @@ use Closure;
 
 class RoleMiddleware
 {
-    public function handle($request,Closure $next,$role){
+    public function handle($request,Closure $next,$roles){
         $isAuthenticate = $request->session()->get("isAuthenticate");
         $authType = $request->session()->get("authType");
-        if(empty($isAuthenticate) || empty($authType) || $authType != $role){
+        $roles = explode("|",$roles);
+        if(empty($isAuthenticate) || empty($authType) || !in_array($authType,$roles)){
             return redirect(route("authenticate"));
         }
         return $next($request);

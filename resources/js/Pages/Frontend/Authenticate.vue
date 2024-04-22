@@ -41,7 +41,6 @@
                 try{
                     axios.post($vm.route('validate-authenticate'),$vm.form).then(({data}) => {
                         document.getElementById("rt-custom-loader").style.display = "none";
-                        toast(data.message,{"type": data.status,"autoClose": 3000,"transition": "slide"});
                         if(data.status == "success"){
                             $vm.form = {password: ""};
                             if(data.authType == "physician"){
@@ -49,6 +48,8 @@
                             }else if(data.authType == "admin"){
                                 $vm.$inertia.visit(route('admin'));
                             }
+                        }else{
+                            toast(data.message,{"type": data.status,"autoClose": 3000,"transition": "slide"});
                         }
                     });
                 }catch(e){
