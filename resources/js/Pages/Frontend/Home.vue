@@ -45,7 +45,7 @@
                 errors: [],
                 deadline: moment(deadline).format("MMM DD, YYYY"),
                 hasExpired: hasExpired,
-                maxDate: moment().format("YYYY-mm-dd")
+                maxDate: moment().format("YYYY-MM-DD")
             }
         },
         mounted(){

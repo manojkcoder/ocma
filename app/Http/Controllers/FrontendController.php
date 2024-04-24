@@ -11,8 +11,11 @@ use App\Jobs\InviteEmailJob;
 
 class FrontendController extends Controller
 {
-    public function index(Request $request): Response{
+    public function index(Request $request){
         $license = $request->license ?? "";
+        if(empty($license)){
+            return Redirect::route("start");
+        }
         return Inertia::render("Frontend/Home",compact("license"));
     }
     public function authenticate(Request $request){
