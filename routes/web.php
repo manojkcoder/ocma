@@ -64,7 +64,8 @@ Route::group(["middleware" => "role:admin"],function(){
     Route::get("/committees",[CommitteeController::class,"index"])->name("committees");
     Route::get("/committees/all",[CommitteeController::class,"getAll"])->name("committees.all");
     Route::post("/committees/add",[CommitteeController::class,"add"])->name("committees.add");
-    Route::delete("/all-committees/delete/{id}",[CommitteeController::class,"delete"])->name("committees.delete");
+    Route::get("/committees/delete/{id}",[CommitteeController::class,"delete"])->name("committees.delete");
+    Route::get("/committees/resend/{id}",[CommitteeController::class,"resend"])->name("committees.resend");
 });
 Route::group(["middleware" => "role:committee"],function(){
     Route::get("/remarks",[MemberController::class,"remarks"])->name("remarks");

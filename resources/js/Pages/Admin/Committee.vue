@@ -90,6 +90,47 @@
                 }catch(e){
                     document.getElementById("rt-custom-loader").style.display = "none";
                 }
+            },
+            resendMember: function(itemId){
+                document.getElementById("rt-custom-loader").style.display = "block";
+                try{
+                    axios.get(this.route("committees.resend",{id: itemId})).then(({data}) => {
+                        document.getElementById("rt-custom-loader").style.display = "none";
+                        toast(data.message,{"type": data.status,"autoClose": 3000,"transition": "slide"});
+                    });
+                }catch(e){
+                    document.getElementById("rt-custom-loader").style.display = "none";
+                }
+            },
+            handleDeleteMember: function(itemId){
+                this.$swal.fire({
+                    title: "Are you sure?",
+                    text: "Are you sure you want to delete Committee Member?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Delete it!',
+                    cancelButtonText: "No, Cancel it!",
+                    closeOnConfirm: false,
+                }).then((result) => {
+                    if(result.isConfirmed){
+                        this.deleteMember(itemId);
+                    }
+                });
+            },
+            deleteMember: function(itemId){
+                let $vm = this;
+                document.getElementById("rt-custom-loader").style.display = "block";
+                try{
+                    axios.get($vm.route("committees.delete",{id: itemId})).then(({data}) => {
+                        document.getElementById("rt-custom-loader").style.display = "none";
+                        toast(data.message,{"type": data.status,"autoClose": 3000,"transition": "slide"});
+                        if(data.status == "success"){
+                            $vm.loadItems(1,$vm.length);
+                        }
+                    });
+                }catch(e){
+                    document.getElementById("rt-custom-loader").style.display = "none";
+                }
             }
         }
     }
@@ -105,7 +146,7 @@
 <template>
     <Modal :show="showPopup" @close="handlePopup" maxWidth="md">
         <div class="flex justify-between items-center px-6 py-4 bg-gray">
-            <div class="title-md font-medium">Add Member</div>
+            <div class="title-md font-medium">Add Committee Member</div>
             <button type="button" class="title-md font-medium" @click="handlePopup(false)">&times;</button>
         </div>
         <form class="px-6 py-6" @submit.prevent="onSubmit">
@@ -149,9 +190,9 @@
                     </div>
                 </a>
             </div>
-            <h2 class="text-2xl text-lightBlack uppercase font-medium leading-7 mb-6 text-center">Committees</h2>
+            <h2 class="text-2xl text-lightBlack uppercase font-medium leading-7 mb-6 text-center">Committee Members</h2>
             <div class="w-full flex justify-end gap-3 mb-6">
-                <button class="flex px-4 py-2 bg-darkBlue text-white text-base rounded-md" @click="handlePopup(true)">Add Member</button>
+                <button class="flex px-4 py-2 bg-darkBlue text-white text-base rounded-md" @click="handlePopup(true)">Add Committee Member</button>
             </div>
             <!-- <v-text-field v-model="search" label="Search by Name, Email, and Phone number" single-line hide-details></v-text-field> -->
             <v-data-table-server
@@ -171,7 +212,8 @@
                         <td>{{item.phone}}</td>
                         <td>
                             <div class="flex items-center gap-3">
-                                <button class="flex px-4 py-2 bg-darkBlue text-white text-base rounded-md">Delete</button>
+                                <button class="flex px-4 py-2 bg-darkBlue text-white text-base rounded-md" @click="resendMember(item.id)">Resend</button>
+                                <button class="flex px-4 py-2 bg-darkBlue text-white text-base rounded-md" @click="handleDeleteMember(item.id)">Delete</button>
                             </div>
                         </td>
                     </tr>

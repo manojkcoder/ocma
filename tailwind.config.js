@@ -21,7 +21,8 @@ export default {
             "lightBlack": "#525252",
             "white": "#FFFFFF",
             "red": "#F00000",
-            "orange": "#f48521"
+            "orange": "#f48521",
+            "lightGreen": "#dff0d8"
         },
         extend: {
             fontFamily: {

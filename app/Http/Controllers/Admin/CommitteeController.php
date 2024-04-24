@@ -55,7 +55,22 @@ class CommitteeController extends Controller
         RemarkEmailJob::dispatch($data);
         return json_encode(["status" => "success","message" => "A Committee Member has been successfully added."]);
     }
-    public function deleteCommittee(Request $request,$id){
+    public function resend(Request $request,$id){
+        $committee = Committee::where("id",$id)->first();
+        if(empty($committee)){
+            return json_encode(["status" => "error","message" => "Committee member not exist."]);
+        }
+        $data = [
+            "link" => route("member-login"),
+            "subject" => "OCMA - Committee Member Credentials",
+            "to_address" => $committee->email,
+            "login_email" => $committee->email,
+            "login_password" => $committee->password
+        ];
+        RemarkEmailJob::dispatch($data);
+        return json_encode(["status" => "success","message" => "Resend credentials to committee member."]);
+    }
+    public function delete(Request $request,$id){
         $existCommittee = Committee::where("id",$id)->first();
         if(empty($existCommittee)){
             return json_encode(["status" => "error","message" => "Committee member not exist."]);

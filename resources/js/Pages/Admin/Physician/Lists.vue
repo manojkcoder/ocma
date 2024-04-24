@@ -94,6 +94,21 @@
                 }
             },
             handleDeleteAttachment: function(rowIndex,attchId,attchIndex){
+                this.$swal.fire({
+                    title: "Are you sure?",
+                    text: "Are you sure you want to delete the attachment?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Delete it!',
+                    cancelButtonText: "No, Cancel it!",
+                    closeOnConfirm: false,
+                }).then((result) => {
+                    if(result.isConfirmed){
+                        this.deleteAttachment(rowIndex,attchId,attchIndex);
+                    }
+                });
+            },
+            deleteAttachment: function(rowIndex,attchId,attchIndex){
                 let $vm = this;
                 let formData = new FormData();
                 formData.append('_method','DELETE');
@@ -124,6 +139,21 @@
                     toast(data.message,{"type": data.status,"autoClose": 3000,"transition": "slide"});
                     if(data.status == "success"){
                         $vm.tableRecords[rowIndex].mark_complete = status;
+                    }
+                });
+            },
+            handleDeleteEvaluation: function(itemId,type){
+                this.$swal.fire({
+                    title: "Are you sure?",
+                    text: "Are you sure you want to delete the evaluation?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Delete it!',
+                    cancelButtonText: "No, Cancel it!",
+                    closeOnConfirm: false,
+                }).then((result) => {
+                    if(result.isConfirmed){
+                        this.deleteEvaluation(itemId,type);
                     }
                 });
             },
@@ -210,7 +240,7 @@
                 @update:options="loadItems"
             >
                 <template v-slot:item="{item,index}">
-                    <tr>
+                    <tr :class="item.mark_complete ? 'bg-lightGreen' : 'bg-white'">
                         <td>
                             <input type="checkbox" class="border rounded-sm border-inherit w-4 h-4" :checked="item.mark_complete" @change="handleMarkComplete(item.id,!item.mark_complete,index)"/>
                         </td>
@@ -234,24 +264,24 @@
                         <td>
                             <template v-if="item.sameReview">
                                 <a :href="route('evaluate-details',{id: item.id,type: 'same'})" target="_blank" class="flex hover:underline mb-1">Same Spl.</a>
-                                <span class="inline-flex cursor-pointer text-red hover:underline mb-1" @click="deleteEvaluation(item.id,'same')">Delete</span>
+                                <span class="inline-flex cursor-pointer text-red hover:underline mb-1" @click="handleDeleteEvaluation(item.id,'same')">Delete</span>
                                 <a :href="route('change-evaluation',{id: item.id,type: 'same'})" target="_blank" class="inline-flex ml-2">Edit</a>
                             </template>
                             <a v-else :href="route('upload-evaluation',{id: item.id,type: 'same'})" target="_blank" class="inline-flex items-center justify-center px-3 py-2 bg-darkBlue text-white text-sm rounded-md mt-1 mb-1">Upload(S)</a><br/>
                             <template v-if="item.differentReview">
                                 <a :href="route('evaluate-details',{id: item.id,type: 'different'})" target="_blank" class="flex hover:underline mb-1">Different Spl.</a>
-                                <span class="inline-flex cursor-pointer text-red hover:underline mb-1" @click="deleteEvaluation(item.id,'different')">Delete</span>
+                                <span class="inline-flex cursor-pointer text-red hover:underline mb-1" @click="handleDeleteEvaluation(item.id,'different')">Delete</span>
                                 <a :href="route('change-evaluation',{id: item.id,type: 'different'})" target="_blank" class="inline-flex ml-2">Edit</a>
                             </template>
                             <a v-else :href="route('upload-evaluation',{id: item.id,type: 'different'})" target="_blank" class="inline-flex items-center justify-center px-3 py-2 bg-darkBlue text-white text-sm rounded-md mb-1">Upload(D)</a>
                         </td>
                         <td>
-                            <div class="flex flex-col gap-3">
-                                <select class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="item.same_member_id" @change="assignMember(item.id,item.same_member_id,'same')">
+                            <div class="flex flex-col gap-3 my-1">
+                                <select class="w-full text-lightBlack border border-lightBlack rounded-md bg-white" v-model="item.same_member_id" @change="assignMember(item.id,item.same_member_id,'same')">
                                     <option value="">Select Memeber</option>
                                     <option v-for="member in members" :key="member.id" :value="member.id">{{ member.name }}</option>
                                 </select>
-                                <select class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="item.different_member_id" @change="assignMember(item.id,item.different_member_id,'different')">
+                                <select class="w-full text-lightBlack border border-lightBlack rounded-md bg-white" v-model="item.different_member_id" @change="assignMember(item.id,item.different_member_id,'different')">
                                     <option value="">Select Memeber</option>
                                     <option v-for="member in members" :key="member.id" :value="member.id">{{ member.name }}</option>
                                 </select>
