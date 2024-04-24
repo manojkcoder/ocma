@@ -18,15 +18,15 @@
             <div class="mx-auto w-full max-w-[1170px] flex items-start gap-20">
                 <img src="/assets/images/new-logo.png" class="max-w-40"/>
                 <div class="text-center">
-                    <h1 class="text-2xl text-blue uppercase font-medium leading-7 max-w-[680px] mb-2">Selection Criteria for the Orange County Physicians of Excellence Honor</h1>
-                    <h2 class="text-xl text-light-black uppercase font-medium leading-7 max-w-[680px]">The basic Selection criteria are listed below</h2>
+                    <h1 class="text-2xl text-darkBlue uppercase font-medium leading-7 max-w-[680px] mb-2">Selection Criteria for the Orange County Physicians of Excellence Honor</h1>
+                    <h2 class="text-xl text-lightBlack uppercase font-medium leading-7 max-w-[680px]">The basic Selection criteria are listed below</h2>
                 </div>
             </div>
         </div>
         <div class="flex flex-col justify-center items-center py-8 mt-4 mb-4">
-            <a :href="route('edit-nomination')" class="rounded-lg bg-blue text-white px-4 py-2 text-md uppercase font-medium" v-if="physician && physician.form_status == 'saved'">Edit/Update The Nomination</a>
-            <p class="or text-md text-light-black" v-if="physician && physician.form_status == 'saved'">OR</p>
-            <a :href="route('invite-people')" class="rounded-lg bg-blue text-white px-4 py-2 text-md uppercase font-medium">Invite Physician Colleague</a>
+            <a :href="route('edit-nomination')" class="rounded-lg bg-darkBlue text-white px-4 py-2 text-md uppercase font-medium" v-if="physician && physician.form_status == 'saved'">Edit/Update The Nomination</a>
+            <p class="or text-md text-lightBlack" v-if="physician && physician.form_status == 'saved'">OR</p>
+            <a :href="route('invite-people')" class="rounded-lg bg-darkBlue text-white px-4 py-2 text-md uppercase font-medium">Invite Physician Colleague</a>
         </div>
         <Instruction/>
     </FrontendLayout>

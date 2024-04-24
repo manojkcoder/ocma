@@ -3,20 +3,15 @@
     export default {
         data(){
             return {
-                url: route('all.physicians'),
+                url: route('remarks.all'),
                 length: 10,
                 headers: [
-                    {title: 'Mark As Complete',key: 'mark_complete',align: 'start',sortable: false},
-                    {title: 'First Name',key: 'first_name',sortable: false},
-                    {title: 'Last Name',key: 'last_name',sortable: false},
+                    {title: 'Name',key: 'name',sortable: false},
                     {title: 'Email',key: 'email',sortable: false},
                     {title: 'Medical License No.',key: 'medical_license',sortable: false},
                     {title: 'Attachments',key: 'attachments',sortable: false},
-                    {title: 'Nomination Details',key: 'nomination_details',sortable: false},
-                    {title: 'Reivews',key: 'reivews',sortable: false},
-                    {title: 'Assign Committee Member',key: 'assign_committee_member',sortable: false},
-                    {title: 'Status',key: 'form_status',sortable: false},
-                    {title: 'Action',key: '',sortable: false},
+                    {title: 'Nomination Details',key: '',sortable: false},
+                    {title: 'Remark Status',key: '',sortable: false,width: "150px"},
                 ],
                 search: '',
                 tableRecords: [],
@@ -25,11 +20,11 @@
             }
         },
         methods: {
-            loadItems({page,itemsPerPage,sortBy}){
+            loadItems({page,itemsPerPage}){
                 let $vm = this;
                 try{
                     $vm.isLoading = true
-                    axios.get(this.url,{params:{page,search: this.search,length: itemsPerPage,sortBy}}).then(({data}) => {
+                    axios.get(this.url,{params:{page,search: this.search,length: itemsPerPage}}).then(({data}) => {
                         $vm.isLoading = false;
                         $vm.tableRecords = data.data;
                         $vm.totalItems = data.total;
@@ -55,13 +50,13 @@
             <div class="mx-auto w-full max-w-[1170px] flex items-start gap-20">
                 <img src="/assets/images/new-logo.png" class="max-w-40"/>
                 <div class="text-center">
-                    <h1 class="text-2xl text-blue uppercase font-medium leading-7 max-w-[680px] mb-2">Physician Evalution Form</h1>
-                    <h2 class="text-xl text-blue uppercase font-medium leading-7 max-w-[680px]">Orange County Register Magazine Physician of Excellence</h2>
+                    <h1 class="text-2xl text-darkBlue uppercase font-medium leading-7 max-w-[680px] mb-2">Committee Member Panel</h1>
+                    <h2 class="text-xl text-lightBlack uppercase font-medium leading-7 max-w-[680px]">Orange County Register Magazine Physician of Excellence</h2>
                 </div>
             </div>
         </div>
         <div class="mx-auto w-full max-w-[1440px] flex flex-col pt-10 px-4">
-            <h2 class="text-2xl text-light-black uppercase font-medium leading-7 mb-6 text-center">Admin Panel</h2>
+            <h2 class="text-2xl text-lightBlack uppercase font-medium leading-7 mb-6 text-center">Remarks</h2>
             <!-- <v-text-field v-model="search" label="Search by Name, Email, and Medical license number" single-line hide-details></v-text-field> -->
             <v-data-table-server
                 v-model:items-per-page="length"
@@ -75,17 +70,24 @@
             >
                 <template v-slot:item="{item}">
                     <tr>
-                        <td></td>
-                        <td>{{item.first_name ? ucwords(item.first_name) : ''}}</td>
-                        <td>{{item.last_name ? ucwords(item.last_name) : ''}}</td>
+                        <td>{{item.first_name ? ucwords(item.first_name) : ''}} {{item.last_name ? ucwords(item.last_name) : ''}}</td>
                         <td>{{item.email}}</td>
                         <td>{{item.medical_license}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>
+                            <div class="attachments" v-if="item.attachments.length > 0">
+                                <div class="attachment" v-for="(attachment,attchIndex) in item.attachments" :key="attchIndex">
+                                    <a :href="attachment.document_path" target="_blank" class="text-darkBlue hover:underline">{{ attachment.document_name }}</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a :href="route('remarks.complete',{id: item.encodeId})" target="_blank" class="inline-flex items-center justify-center text-darkBlue text-sm hover:underline hover:text-red">View and Remark</a>
+                        </td>
+                        <td>
+                            <div class="flex gap-2 items-center">
+                                <input type="checkbox" class="border rounded-sm border-inherit w-4 h-4" :checked="item.memberRemark" disabled/>
+                            </div>
+                        </td>
                     </tr>
                 </template>
             </v-data-table-server>

@@ -8,7 +8,7 @@ return new class extends Migration
     public function up(): void{
         Schema::create('reviews',function(Blueprint $table){
             $table->id();
-            $table->unsignedBigInteger('nomination_id')->nullable();
+            $table->unsignedBigInteger('physician_id')->nullable();
             $table->enum('type',['same','different'])->nullable();
             $table->string('reviewer_name')->nullable();
             $table->string('primary_specialty')->nullable();
@@ -22,8 +22,9 @@ return new class extends Migration
             $table->integer('rating_healthcare')->nullable();
             $table->integer('rating_patients')->nullable();
             $table->integer('rating_skills')->nullable();
+            $table->text('scan_evalutaion_url')->nullable();
             $table->timestamps();
-            $table->foreign('nomination_id')->references('id')->on('physicians')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('physician_id')->references('id')->on('physicians')->onDelete('cascade')->onUpdate('cascade');
         });
     }
     public function down(): void{

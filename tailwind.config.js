@@ -16,9 +16,9 @@ export default {
             xl: "1440px"
         },
         colors: {
-            "grey": "#eaeaea",
-            "blue": "#2f6680",
-            "light-black": "#525252",
+            "gray": "#eaeaea",
+            "darkBlue": "#2f6680",
+            "lightBlack": "#525252",
             "white": "#FFFFFF",
             "red": "#F00000",
             "orange": "#f48521"

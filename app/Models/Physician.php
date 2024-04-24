@@ -4,6 +4,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use App\Models\MemberAssign;
+use App\Models\Attachment;
+use App\Models\Review;
 
 class Physician extends Model
 {
@@ -25,5 +28,14 @@ class Physician extends Model
     ];
     public function getCreatedAtAttribute($value){
         return Carbon::parse($value)->format("d M Y");
+    }
+    public function members(){
+        return $this->hasMany(MemberAssign::class);
+    }
+    public function attachments(){
+        return $this->hasMany(Attachment::class);
+    }
+    public function reviews(){
+        return $this->hasMany(Review::class);
     }
 }

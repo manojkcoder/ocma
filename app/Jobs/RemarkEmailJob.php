@@ -7,7 +7,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Mail;
 
-class InviteEmailJob implements ShouldQueue
+class RemarkEmailJob implements ShouldQueue
 {
     use Dispatchable,InteractsWithQueue,Queueable,SerializesModels;
     protected $details;
@@ -16,7 +16,7 @@ class InviteEmailJob implements ShouldQueue
     }
     public function handle(){
         $data = $this->details;
-        Mail::send(['html' => 'emails.review'],$data,function($mail) use ($data){
+        Mail::send(['html' => 'emails.remark'],$data,function($mail) use ($data){
             $mail->to($data["to_address"])->subject($data["subject"]);
         });
     }

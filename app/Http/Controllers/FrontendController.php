@@ -55,7 +55,7 @@ class FrontendController extends Controller
         if($nominationId){
             $physician = Physician::where("id",$nominationId)->first();
             if($physician){
-                $rating = Review::where("nomination_id",$physician->id)->first();
+                $rating = Review::where(["physician_id" => $physician->id,"type" => $type])->first();
                 if($rating){
                     $hasRating = true;
                 }
@@ -71,7 +71,7 @@ class FrontendController extends Controller
     public function start(Request $request): Response{
         return Inertia::render("Frontend/Start");
     }
-    public function invite(Request $request): Response{
+    public function invite(Request $request){
         $license = $request->session()->get("license");
         if(empty($license)){
             return Redirect::route("start");
@@ -82,7 +82,7 @@ class FrontendController extends Controller
         }
         return Inertia::render("Frontend/Invite",compact("physician"));
     }
-    public function invitePeople(Request $request): Response{
+    public function invitePeople(Request $request){
         $license = $request->session()->get("license");
         if(empty($license)){
             return Redirect::route("start");
@@ -96,16 +96,21 @@ class FrontendController extends Controller
         $encodedDifferent = base64_encode("different");
         return Inertia::render("Frontend/InvitePeople",compact("physician","encodedId","encodedSame","encodedDifferent"));
     }
-    public function editNomination(Request $request): Response{
+    public function editNomination(Request $request){
         $license = $request->session()->get("license");
+        $isAdminEditing = $request->admin_editing ? 1 : 0;
         if(empty($license)){
-            return Redirect::route("start");
+            if(empty($request->license)){
+                return Redirect::route("start");
+            }else{
+                $license = $request->license;
+            }
         }
         $physician = Physician::where("medical_license",$license)->first();
         if(empty($physician)){
             return Redirect::route("start");
         }
-        return Inertia::render("Frontend/EditNomination",compact("physician"));
+        return Inertia::render("Frontend/EditNomination",compact("physician","isAdminEditing"));
     }
     public function checkApplication(Request $request){
         $license = $request->license;
