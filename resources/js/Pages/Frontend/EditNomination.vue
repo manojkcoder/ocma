@@ -45,7 +45,8 @@
                 },
                 errors: [],
                 deadline: moment(deadline).format("MMM DD, YYYY"),
-                hasExpired: hasExpired
+                hasExpired: hasExpired,
+                maxDate: moment().format("YYYY-mm-dd")
             }
         },
         mounted(){
@@ -430,11 +431,11 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">From</label>
-                                    <input type="date" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="leadershipPosition.from"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="leadershipPosition.from"/>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                    <input type="date" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="leadershipPosition.to"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="leadershipPosition.to"/>
                                 </div>
                                 <div class="flex flex-col flex-1">
                                     <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -467,11 +468,11 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">From</label>
-                                    <input type="date" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="electedMember.from"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="electedMember.from"/>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                    <input type="date" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="electedMember.to"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="electedMember.to"/>
                                 </div>
                                 <div class="flex flex-col flex-1">
                                     <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -508,11 +509,11 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">From</label>
-                                    <input type="date" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="teachingActivity.from"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="teachingActivity.from"/>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                    <input type="date" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="teachingActivity.to"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="teachingActivity.to"/>
                                 </div>
                                 <div class="flex flex-col flex-1">
                                     <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -538,11 +539,11 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">From</label>
-                                    <input type="date" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="medicalEducation.from"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="medicalEducation.from"/>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                    <input type="date" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="medicalEducation.to"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="medicalEducation.to"/>
                                 </div>
                                 <div class="flex flex-col flex-1">
                                     <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -575,11 +576,11 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">From</label>
-                                    <input type="date" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="medicalAdvance.from"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="medicalAdvance.from"/>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                    <input type="date" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="medicalAdvance.to"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="medicalAdvance.to"/>
                                 </div>
                                 <div class="flex flex-col flex-1">
                                     <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -616,11 +617,11 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">From</label>
-                                    <input type="date" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="participationActivity.from"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="participationActivity.from"/>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                    <input type="date" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="participationActivity.to"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="participationActivity.to"/>
                                 </div>
                                 <div class="flex flex-col flex-1">
                                     <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -648,11 +649,11 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">From</label>
-                                    <input type="date" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="otherActivity.from"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="otherActivity.from"/>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                    <input type="date" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="otherActivity.to"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="otherActivity.to"/>
                                 </div>
                                 <div class="flex flex-col flex-1">
                                     <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
