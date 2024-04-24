@@ -35,13 +35,13 @@
                     primary_hospital_affiliation: this.physician.primary_hospital_affiliation || "",
                     special_interest: this.physician.special_interest || "",
                     signature: this.physician.signature || "",
-                    leadership_positions: this.physician.leadership_positions || [{position: "",other_position: "",from: "",to: "",description: ""}],
-                    elected_members: this.physician.elected_members || [{position: "",other_position: "",from: "",to: "",description: ""}],
-                    teaching_activities: this.physician.teaching_activities || [{position: "",other_position: "",from: "",to: "",description: ""}],
-                    medical_educations: this.physician.medical_educations || [{title: "",from: "",to: "",description: ""}],
-                    medical_advances: this.physician.medical_advances || [{position: "",other_position: "",from: "",to: "",description: ""}],
-                    participation_activities: this.physician.participation_activities || [{position: "",other_position: "",from: "",to: "",description: ""}],
-                    other_activities: this.physician.other_activities || [{title: "",from: "",to: "",description: ""}]
+                    leadership_positions: this.physician.leadership_positions || [{position: "",other_position: "",from: "",to: "",present: false,description: ""}],
+                    elected_members: this.physician.elected_members || [{position: "",other_position: "",from: "",to: "",present: false,description: ""}],
+                    teaching_activities: this.physician.teaching_activities || [{position: "",other_position: "",from: "",to: "",present: false,description: ""}],
+                    medical_educations: this.physician.medical_educations || [{title: "",from: "",to: "",present: false,description: ""}],
+                    medical_advances: this.physician.medical_advances || [{position: "",other_position: "",from: "",to: "",present: false,description: ""}],
+                    participation_activities: this.physician.participation_activities || [{position: "",other_position: "",from: "",to: "",present: false,description: ""}],
+                    other_activities: this.physician.other_activities || [{title: "",from: "",to: "",present: false,description: ""}]
                 },
                 errors: [],
                 deadline: moment(deadline).format("MMM DD, YYYY"),
@@ -58,8 +58,25 @@
             clearInterval(this.timer);
         },
         methods: {
+            handlePresent: function(type,index){
+                if(type == 'leadership_positions'){
+                    this.form.leadership_positions[index].to = "";
+                }else if(type == 'elected_members'){
+                    this.form.elected_members[index].to = "";
+                }else if(type == 'teaching_activities'){
+                    this.form.teaching_activities[index].to = "";
+                }else if(type == 'medical_educations'){
+                    this.form.medical_educations[index].to = "";
+                }else if(type == 'medical_advances'){
+                    this.form.medical_advances[index].to = "";
+                }else if(type == 'participation_activities'){
+                    this.form.participation_activities[index].to = "";
+                }else if(type == 'other_activities'){
+                    this.form.other_activities[index].to = "";
+                }
+            },
             addLeadershipPosition: function(){
-                this.form.leadership_positions.push({position: "",other_position: "",from: "",to: "",description: ""});
+                this.form.leadership_positions.push({position: "",other_position: "",from: "",to: "",present: false,description: ""});
             },
             removeLeadershipPosition: function(index){
                 if(this.form.leadership_positions.length > 1){
@@ -67,7 +84,7 @@
                 }
             },
             addElectedMember: function(){
-                this.form.elected_members.push({position: "",other_position: "",from: "",to: "",description: ""});
+                this.form.elected_members.push({position: "",other_position: "",from: "",to: "",present: false,description: ""});
             },
             removeElectedMember: function(index){
                 if(this.form.elected_members.length > 1){
@@ -75,7 +92,7 @@
                 }
             },
             addTeachingActivity: function(){
-                this.form.teaching_activities.push({position: "",other_position: "",from: "",to: "",description: ""});
+                this.form.teaching_activities.push({position: "",other_position: "",from: "",to: "",present: false,description: ""});
             },
             removeTeachingActivity: function(index){
                 if(this.form.teaching_activities.length > 1){
@@ -83,7 +100,7 @@
                 }
             },
             addMedicalEducation: function(){
-                this.form.medical_educations.push({title: "",from: "",to: "",description: ""});
+                this.form.medical_educations.push({title: "",from: "",to: "",present: false,description: ""});
             },
             removeMedicalEducation: function(index){
                 if(this.form.medical_educations.length > 1){
@@ -91,7 +108,7 @@
                 }
             },
             addMedicalAdvance: function(){
-                this.form.medical_advances.push({position: "",other_position: "",from: "",to: "",description: ""});
+                this.form.medical_advances.push({position: "",other_position: "",from: "",to: "",present: false,description: ""});
             },
             removeMedicalAdvance: function(index){
                 if(this.form.medical_advances.length > 1){
@@ -99,7 +116,7 @@
                 }
             },
             addParticipationActivity: function(){
-                this.form.participation_activities.push({position: "",other_position: "",from: "",to: "",description: ""});
+                this.form.participation_activities.push({position: "",other_position: "",from: "",to: "",present: false,description: ""});
             },
             removeParticipationActivity: function(index){
                 if(this.form.participation_activities.length > 1){
@@ -107,7 +124,7 @@
                 }
             },
             addOtherActivity: function(){
-                this.form.other_activities.push({title: "",from: "",to: "",description: ""});
+                this.form.other_activities.push({title: "",from: "",to: "",present: false,description: ""});
             },
             removeOtherActivity: function(index){
                 if(this.form.other_activities.length > 1){
@@ -435,7 +452,10 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="leadershipPosition.to"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="leadershipPosition.to" :disabled="leadershipPosition.present"/>
+                                    <div class="flex gap-2 items-center">
+                                        <input type="checkbox" v-model="leadershipPosition.present" @change="handlePresent('leadership_positions',index)"/> Present
+                                    </div>
                                 </div>
                                 <div class="flex flex-col flex-1">
                                     <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -472,7 +492,10 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="electedMember.to"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="electedMember.to" :disabled="electedMember.present"/>
+                                    <div class="flex gap-2 items-center">
+                                        <input type="checkbox" v-model="electedMember.present" @change="handlePresent('elected_members',index)"/> Present
+                                    </div>
                                 </div>
                                 <div class="flex flex-col flex-1">
                                     <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -513,7 +536,10 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="teachingActivity.to"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="teachingActivity.to" :disabled="teachingActivity.present"/>
+                                    <div class="flex gap-2 items-center">
+                                        <input type="checkbox" v-model="teachingActivity.present" @change="handlePresent('teaching_activities',index)"/> Present
+                                    </div>
                                 </div>
                                 <div class="flex flex-col flex-1">
                                     <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -543,7 +569,10 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="medicalEducation.to"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="medicalEducation.to" :disabled="medicalEducation.present"/>
+                                    <div class="flex gap-2 items-center">
+                                        <input type="checkbox" v-model="medicalEducation.present" @change="handlePresent('medical_educations',index)"/> Present
+                                    </div>
                                 </div>
                                 <div class="flex flex-col flex-1">
                                     <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -580,7 +609,10 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="medicalAdvance.to"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="medicalAdvance.to" :disabled="medicalAdvance.present"/>
+                                    <div class="flex gap-2 items-center">
+                                        <input type="checkbox" v-model="medicalAdvance.present" @change="handlePresent('medical_advances',index)"/> Present
+                                    </div>
                                 </div>
                                 <div class="flex flex-col flex-1">
                                     <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -621,7 +653,10 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="participationActivity.to"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="participationActivity.to" :disabled="participationActivity.present"/>
+                                    <div class="flex gap-2 items-center">
+                                        <input type="checkbox" v-model="participationActivity.present" @change="handlePresent('participation_activities',index)"/> Present
+                                    </div>
                                 </div>
                                 <div class="flex flex-col flex-1">
                                     <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -653,7 +688,10 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="otherActivity.to"/>
+                                    <input type="date" :max="maxDate" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="otherActivity.to" :disabled="otherActivity.present"/>
+                                    <div class="flex gap-2 items-center">
+                                        <input type="checkbox" v-model="otherActivity.present" @change="handlePresent('other_activities',index)"/> Present
+                                    </div>
                                 </div>
                                 <div class="flex flex-col flex-1">
                                     <label class="text-md mb-1 text-lightBlack font-medium">Description</label>

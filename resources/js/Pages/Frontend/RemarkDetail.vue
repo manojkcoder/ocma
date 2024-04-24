@@ -219,7 +219,7 @@
                             </div>
                             <div class="flex flex-col">
                                 <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                <p>{{ leadershipPosition.to ? moment(leadershipPosition.to).format("MMM DD, YYYY") : "--" }}</p>
+                                <p>{{ leadershipPosition.present ? "Present" : leadershipPosition.to ? moment(leadershipPosition.to).format("MMM DD, YYYY") : "--" }}</p>
                             </div>
                             <div class="flex flex-col flex-1">
                                 <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -241,7 +241,7 @@
                             </div>
                             <div class="flex flex-col">
                                 <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                <p>{{ electedMember.to ? moment(electedMember.to).format("MMM DD, YYYY") : "--" }}</p>
+                                <p>{{ electedMember.present ? "Present" : electedMember.to ? moment(electedMember.to).format("MMM DD, YYYY") : "--" }}</p>
                             </div>
                             <div class="flex flex-col flex-1">
                                 <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -265,7 +265,7 @@
                             </div>
                             <div class="flex flex-col">
                                 <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                <p>{{ teachingActivity.to ? moment(teachingActivity.to).format("MMM DD, YYYY") : "--" }}</p>
+                                <p>{{ teachingActivity.present ? "Present" : teachingActivity.to ? moment(teachingActivity.to).format("MMM DD, YYYY") : "--" }}</p>
                             </div>
                             <div class="flex flex-col flex-1">
                                 <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -287,7 +287,7 @@
                             </div>
                             <div class="flex flex-col">
                                 <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                <p>{{ medicalEducation.to ? moment(medicalEducation.to).format("MMM DD, YYYY") : "--" }}</p>
+                                <p>{{ medicalEducation.present ? "Present" : medicalEducation.to ? moment(medicalEducation.to).format("MMM DD, YYYY") : "--" }}</p>
                             </div>
                             <div class="flex flex-col flex-1">
                                 <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -309,7 +309,7 @@
                             </div>
                             <div class="flex flex-col">
                                 <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                <p>{{ medicalAdvance.to ? moment(medicalAdvance.to).format("MMM DD, YYYY") : "--" }}</p>
+                                <p>{{ medicalAdvance.present ? "Present" : medicalAdvance.to ? moment(medicalAdvance.to).format("MMM DD, YYYY") : "--" }}</p>
                             </div>
                             <div class="flex flex-col flex-1">
                                 <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -333,7 +333,7 @@
                             </div>
                             <div class="flex flex-col">
                                 <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                <p>{{ participationActivity.to ? moment(participationActivity.to).format("MMM DD, YYYY") : "--" }}</p>
+                                <p>{{ participationActivity.present ? "Present" : participationActivity.to ? moment(participationActivity.to).format("MMM DD, YYYY") : "--" }}</p>
                             </div>
                             <div class="flex flex-col flex-1">
                                 <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
@@ -357,7 +357,7 @@
                             </div>
                             <div class="flex flex-col">
                                 <label class="text-md mb-1 text-lightBlack font-medium">To</label>
-                                <p>{{ otherActivity.to ? moment(otherActivity.to).format("MMM DD, YYYY") : "--" }}</p>
+                                <p>{{ otherActivity.present ? "Present" : otherActivity.to ? moment(otherActivity.to).format("MMM DD, YYYY") : "--" }}</p>
                             </div>
                             <div class="flex flex-col flex-1">
                                 <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
