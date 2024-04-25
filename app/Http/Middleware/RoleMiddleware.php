@@ -9,7 +9,11 @@ class RoleMiddleware
         $authType = $request->session()->get("authType");
         $roles = explode("|",$roles);
         if(empty($isAuthenticate) || empty($authType) || !in_array($authType,$roles)){
-            return redirect(route("authenticate"));
+            if(in_array("committee",$roles)){
+                return redirect(route("member-login"));
+            }else{
+                return redirect(route("authenticate"));
+            }
         }
         return $next($request);
     }
