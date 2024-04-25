@@ -109,6 +109,7 @@
                 </div>
                 <button class="rounded-lg bg-darkBlue text-white m-auto px-6 py-2 text-md uppercase font-medium">Send Emails</button>
             </form>
+            <div class="w-full max-w-[1170px] text-base text-white mt-10 px-5 py-3 bg-orange rounded-md"><strong class="font-bold">Important:</strong> Please invite only one physician from the same specialty and one physician from a different specialty to evaluate you. Our system accepts only one evaluation per category. Thank you for your cooperation.</div>
             <p class="or text-md text-lightBlack">OR</p>
             <h2 class="text-xl text-darkBlue text-center uppercase font-semibold mb-4">Share Link</h2>
             <div class="flex gap-5 w-full max-w-[1170px]">

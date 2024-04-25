@@ -100,14 +100,10 @@ class FrontendController extends Controller
         return Inertia::render("Frontend/InvitePeople",compact("physician","encodedId","encodedSame","encodedDifferent"));
     }
     public function editNomination(Request $request){
-        $license = $request->session()->get("license");
+        $license = $request->license ? $request->license : $request->session()->get("license");
         $isAdminEditing = $request->admin_editing ? 1 : 0;
         if(empty($license)){
-            if(empty($request->license)){
-                return Redirect::route("start");
-            }else{
-                $license = $request->license;
-            }
+            return Redirect::route("start");
         }
         $physician = Physician::where("medical_license",$license)->first();
         if(empty($physician)){
@@ -119,8 +115,9 @@ class FrontendController extends Controller
         $license = $request->license;
         $physician = Physician::where("medical_license",$license)->first();
         $isFound = $physician ? true : false;
+        $isAppSubmitted = ($physician && $physician->form_status == "submitted") ? true : false;
         $request->session()->put("license",$license);
-        return json_encode(compact("isFound"));
+        return json_encode(compact("isFound","isAppSubmitted"));
     }
     public function savePhysician(Request $request){
         $physician = Physician::where("medical_license",$request->medical_license)->first();

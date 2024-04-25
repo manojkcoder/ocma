@@ -221,7 +221,11 @@
                         document.getElementById("rt-custom-loader").style.display = "none";
                         toast("The Nomination Details Have Been Updated Successfully.",{"type": "success","autoClose": 3000,"transition": "slide"});
                         clearInterval(this.timer);
-                        this.$inertia.visit(route('invite'));
+                        if(this.isAdminEditing){
+                            this.$inertia.visit(route('admin'));
+                        }else{
+                            this.$inertia.visit(route('invite'));
+                        }
                     });
                 }catch(e){
                     document.getElementById("rt-custom-loader").style.display = "none";
@@ -235,7 +239,11 @@
                         toast(data.message,{"type": data.status,"autoClose": 3000,"transition": "slide"});
                         if(redirect){
                             clearInterval(this.timer);
-                            $vm.$inertia.visit(route('invite'));
+                            if(this.isAdminEditing){
+                                this.$inertia.visit(route('physicians.saved'));
+                            }else{
+                                this.$inertia.visit(route('invite'));
+                            }
                         }
                     });
                 }catch(e){
@@ -714,9 +722,8 @@
             <div class="flex gap-8 py-10 mt-4 justify-center">
                 <button class="rounded-lg bg-darkBlue text-white px-8 py-2 text-md uppercase font-medium">Update</button>
                 <button type="button" @click="onSubmit" class="rounded-lg bg-darkBlue text-white px-8 py-2 text-md uppercase font-medium">Submit</button>
-                <a :href="route('start')" class="rounded-lg bg-red text-white px-8 py-2 text-md uppercase font-medium">Cancel</a>
+                <a :href="isAdminEditing ? route('physicians.saved') : route('start')" class="rounded-lg bg-red text-white px-8 py-2 text-md uppercase font-medium">Cancel</a>
             </div>
         </form>
     </FrontendLayout>
 </template>
-

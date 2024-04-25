@@ -46,9 +46,13 @@
                 try{
                     axios.post($vm.route("check-application-via-license"),{license: $vm.license}).then(({data}) => {
                         document.getElementById("rt-custom-loader").style.display = "none";
-                        $vm.isSubmit = true;
-                        $vm.isFound = data.isFound;
                         $vm.showPopup = false;
+                        if(data.isAppSubmitted){
+                            $vm.$inertia.visit(route('invite'));
+                        }else{
+                            $vm.isFound = data.isFound;
+                            $vm.isSubmit = true;
+                        }
                     });
                 }catch(e){
                     document.getElementById("rt-custom-loader").style.display = "none";
@@ -62,8 +66,6 @@
     import Instruction from '@/Components/Instruction.vue';
     import Modal from '@/Components/Modal.vue';
     import {Head} from '@inertiajs/vue3';
-    import {toast} from "vue3-toastify";
-    import "vue3-toastify/dist/index.css";
 </script>
 <template>
     <Modal :show="showPopup" @close="handlePopup" maxWidth="md">

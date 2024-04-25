@@ -9,6 +9,7 @@
                     {title: 'Name',key: 'name',sortable: false},
                     {title: 'Email Address',key: 'email',sortable: false},
                     {title: 'Phone Number',key: 'phone',sortable: false},
+                    {title: 'Password',key: 'password',sortable: false},
                     {title: 'Action',key: '',sortable: false,width: "100px"},
                 ],
                 search: '',
@@ -210,6 +211,7 @@
                         <td>{{item.name ? ucwords(item.name) : ''}}</td>
                         <td>{{item.email}}</td>
                         <td>{{item.phone}}</td>
+                        <td>{{item.password}}</td>
                         <td>
                             <div class="flex items-center gap-3">
                                 <button class="flex px-4 py-2 bg-darkBlue text-white text-base rounded-md" @click="resendMember(item.id)">Resend</button>
