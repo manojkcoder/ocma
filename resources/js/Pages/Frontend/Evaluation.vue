@@ -155,7 +155,7 @@
         <form @submit.prevent="onSubmit" v-else-if="physician">
             <div class="flex py-10 bg-white">
                 <div class="max-w-[1170px] mx-auto flex flex-col items-center gap-y-5">
-                    <p>Dr.&nbsp;<input type="text" name="doctor_name" :value="fullname" readonly style="padding:0;border:none;border-bottom:1px solid;"/> has been nominated for the distinction as an Orange County Physician of Excellence which will be published in <span class="text-orange">Orange Coast Magazine's</span> January 2024 issue. As part of the process, each nominee is required to submit evaluations by their peers. You have been selected by the nominee to submit an evaluation on his/her behalf.<br/><br/>Please complete every question or describe why you are not able to comment about the question. Failure to address a question may result in the physician not being considered for the award. Your responses are <span class="text-orange">strictly confidential</span> and will not be shared with the nominated physician.</p>
+                    <p>Dr.&nbsp;<input type="text" name="doctor_name" :value="fullname" readonly style="padding:0;border:none;border-bottom:1px solid;"/> has been nominated for the distinction as an Orange County Physician of Excellence which will be published in <span class="text-orange">Orange Coast Magazine's</span> January 2025 issue. As part of the process, each nominee is required to submit evaluations by their peers. You have been selected by the nominee to submit an evaluation on his/her behalf.<br/><br/>Please complete every question or describe why you are not able to comment about the question. Failure to address a question may result in the physician not being considered for the award. Your responses are <span class="text-orange">strictly confidential</span> and will not be shared with the nominated physician.</p>
                 </div>
             </div>
             <div class="flex py-10 bg-gray">
@@ -258,7 +258,7 @@
                             <label class="flex mt-1 text-sm leading-1 text-red" v-if="hasValidationError(errors,'reviewer_name')">{{ validationError(errors,'reviewer_name') }}</label>
                         </div>
                         <div class="flex flex-col flex-1">
-                            <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">YOUR PRIMARY SPECIALT</label>
+                            <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">YOUR PRIMARY SPECIALTY</label>
                             <input type="text" id="primary_specialty" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="form.primary_specialty"/>
                             <label class="flex mt-1 text-sm leading-1 text-red" v-if="hasValidationError(errors,'primary_specialty')">{{ validationError(errors,'primary_specialty') }}</label>
                         </div>
