@@ -49,13 +49,13 @@ class AdminController extends Controller
             $remark = new AdminRemark();
             $remark->physician_id = $request->physician_id;
         }
-        $remark->flag1 = $request->flag1 ? $request->flag1 : null;
-        $remark->flag2 = $request->flag2 ? $request->flag2 : null;
-        $remark->flag3 = $request->flag3 ? $request->flag3 : null;
-        $remark->flag4 = $request->flag4 ? $request->flag4 : null;
-        $remark->flag5 = $request->flag5 ? $request->flag5 : null;
-        $remark->flag6 = $request->flag6 ? $request->flag6 : null;
-        $remark->flag7 = $request->flag7 ? $request->flag7 : null;
+        $remark->flag1 = $request->flag1;
+        $remark->flag2 = $request->flag2;
+        $remark->flag3 = $request->flag3;
+        $remark->flag4 = $request->flag4;
+        $remark->flag5 = $request->flag5;
+        $remark->flag6 = $request->flag6;
+        $remark->flag7 = $request->flag7;
         $remark->save();
         return json_encode(["status" => "success","message" => "You Evaluated the application successfully."]);
     }
