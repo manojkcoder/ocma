@@ -258,7 +258,7 @@
                             <label class="flex mt-1 text-sm leading-1 text-red" v-if="hasValidationError(errors,'reviewer_name')">{{ validationError(errors,'reviewer_name') }}</label>
                         </div>
                         <div class="flex flex-col flex-1">
-                            <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">YOUR PRIMARY SPECIALT</label>
+                            <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">YOUR PRIMARY SPECIALTY</label>
                             <input type="text" id="primary_specialty" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="form.primary_specialty"/>
                             <label class="flex mt-1 text-sm leading-1 text-red" v-if="hasValidationError(errors,'primary_specialty')">{{ validationError(errors,'primary_specialty') }}</label>
                         </div>
