@@ -119,4 +119,13 @@ class MemberController extends Controller
         $remark->save();
         return json_encode(["status" => "success","message" => "You Evaluated the application successfully."]);
     }
+    public function comments(Request $request){
+        $physician = Physician::where("id",$request->id)->first();
+        if(empty($physician)){
+            return json_encode(["status" => "error","message" => "Physician Not Found."]);
+        }
+        $physician->comments = $request->comments;
+        $physician->save();
+        return json_encode(["status" => "success","message" => "Comment added successfully."]);
+    }
 }

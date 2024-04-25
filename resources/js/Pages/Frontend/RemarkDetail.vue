@@ -22,6 +22,23 @@
                     description5: (this.memberRemark ? (this.memberRemark.description5 || "") : ''),
                     description6: (this.memberRemark ? (this.memberRemark.description6 || "") : '')
                 },
+                comments: {
+                    id: this.physician.id,
+                    physician: this.physician.comments && this.physician.comments.physician || "",
+                    leadership: this.physician.comments && this.physician.comments.leadership || "",
+                    elected: this.physician.comments && this.physician.comments.elected || "",
+                    mentoring: this.physician.comments && this.physician.comments.mentoring || "",
+                    medical: this.physician.comments && this.physician.comments.medical || "",
+                    scientific: this.physician.comments && this.physician.comments.scientific || "",
+                    humanitarian: this.physician.comments && this.physician.comments.humanitarian || "",
+                    others: this.physician.comments && this.physician.comments.others || "",
+                    rating_community_same: this.physician.comments && this.physician.comments.rating_community_same || "",
+                    evaluation_ans_same: this.physician.comments && this.physician.comments.evaluation_ans_same || "",
+                    doc_name_same: this.physician.comments && this.physician.comments.doc_name_same || "",
+                    rating_community_different: this.physician.comments && this.physician.comments.rating_community_different || "",
+                    evaluation_ans_different: this.physician.comments && this.physician.comments.evaluation_ans_different || "",
+                    doc_name_different: this.physician.comments && this.physician.comments.doc_name_different || ""
+                },
                 ratings: [1,2,3,4,5,6,7,8,9,10],
                 fullname: this.physician ? ((this.physician.first_name || '') + ' ' + (this.physician.last_name || '')) : '',
                 deadline: moment(deadline).format("MMM DD, YYYY")
@@ -38,6 +55,17 @@
                         if(data.status == "success"){
                             $vm.$inertia.visit(route('remarks'));
                         }
+                    });
+                }catch(e){
+                    document.getElementById("rt-custom-loader").style.display = "none";
+                }
+            },
+            submitComments: function(){
+                let $vm = this;
+                try{
+                    document.getElementById("rt-custom-loader").style.display = "block";
+                    axios.post($vm.route('remarks.comments'),$vm.comments).then(({data}) => {
+                        document.getElementById("rt-custom-loader").style.display = "none";
                     });
                 }catch(e){
                     document.getElementById("rt-custom-loader").style.display = "none";
@@ -105,100 +133,108 @@
                     <h2 class="text-2xl text-darkBlue uppercase font-semibold">Please Answer At Length</h2>
                     <p class="text-xl">(*if selected, this information could be published)</p>
                 </div>
-                <div class="flex w-full items-center gap-8">
-                    <label class="text-md text-lightBlack font-medium">Select One</label>
-                    <div class="flex items-center gap-5 w-40 shrink-0">
-                        <label class="text-md flex items-center gap-2"><input type="radio" name="designation" value="md" class="w-5 h-5" :checked="physician.designation == 'md'" disabled/> M.D.</label>
-                        <label class="text-md flex items-center gap-2"><input type="radio" name="designation" value="do" class="w-5 h-5" :checked="physician.designation == 'do'" disabled/> D.O.</label>
+                <div class="flex items-start gap-5">
+                    <div class="flex flex-col items-center gap-y-5">
+                        <div class="flex w-full items-center gap-8">
+                            <label class="text-md text-lightBlack font-medium">Select One</label>
+                            <div class="flex items-center gap-5 w-40 shrink-0">
+                                <label class="text-md flex items-center gap-2"><input type="radio" name="designation" value="md" class="w-5 h-5" :checked="physician.designation == 'md'" disabled/> M.D.</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" name="designation" value="do" class="w-5 h-5" :checked="physician.designation == 'do'" disabled/> D.O.</label>
+                            </div>
+                        </div>
+                        <div class="flex w-full gap-8">
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="first_name">First Name</label>
+                                <input type="text" id="first_name" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.first_name" disabled/>
+                            </div>
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="last_name">Last Name</label>
+                                <input type="text" id="last_name" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.last_name" disabled/>
+                            </div>
+                        </div>
+                        <div class="flex w-full gap-8">
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="email">Email Address</label>
+                                <input type="text" id="email" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.email" disabled/>
+                            </div>
+                        </div>
+                        <div class="flex w-full gap-8">
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="medical_license">Medical License Number</label>
+                                <input type="text" id="medical_license" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.medical_license" disabled/>
+                            </div>
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="date_issue">Date Issued</label>
+                                <input type="text" id="date_issue" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.date_issue" disabled/>
+                            </div>
+                        </div>
+                        <div class="flex w-full gap-8">
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">Primary Specialty</label>
+                                <input type="text" id="primary_specialty" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.primary_specialty" disabled/>
+                            </div>
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="organization">Organization</label>
+                                <input type="text" id="organization" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.organization" disabled/>
+                            </div>
+                        </div>
+                        <div class="flex w-full gap-8">
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="address1">Address 1</label>
+                                <input type="text" id="address1" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.address1" disabled/>
+                            </div>
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="address2">Address 2</label>
+                                <input type="text" id="address2" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.address2" disabled/>
+                            </div>
+                        </div>
+                        <div class="flex w-full gap-8">
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="city">City</label>
+                                <input type="text" id="city" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.city" disabled/>
+                            </div>
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="state">State</label>
+                                <input type="text" id="state" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.state" disabled/>
+                            </div>
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="zip">Zip code</label>
+                                <input type="text" id="zip" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.zip" disabled/>
+                            </div>
+                        </div>
+                        <div class="flex w-full gap-8">
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="phone">Phone Number</label>
+                                <input type="text" id="phone" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.phone" disabled/>
+                            </div>
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="fax">Fax</label>
+                                <input type="text" id="fax" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.fax" disabled/>
+                            </div>
+                        </div>
+                        <div class="flex w-full gap-8">
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="primary_hospital_affiliation">Primary Hospital Affiliation</label>
+                                <input type="text" id="primary_hospital_affiliation" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.primary_hospital_affiliation" disabled/>
+                            </div>
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="special_interest">Special Interest</label>
+                                <input type="text" id="special_interest" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.special_interest" disabled/>
+                            </div>
+                        </div>
+                        <div class="flex w-full gap-8">
+                            <div class="flex flex-col flex-1">
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="signature">Signature (print full name)</label>
+                                <input type="text" id="signature" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.signature" disabled/>
+                            </div>
+                        </div>
+                        <p class="text-darkBlue uppercase"><span class="text-orange">* Please Note:</span> Your Primary Specialty Certification must be from a board recognized by the ABMS or American Board of osteopathic Medical Specialties or Equivalency Board Recognized by The Mbc</p>
+                    </div>
+                    <div class="flex flex-col w-60 shrink-0">
+                        <textarea placeholder="Comment" rows="18" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.physician"></textarea>
+                        <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-center" @click="submitComments">Submit</button>
                     </div>
                 </div>
-                <div class="flex w-full gap-8">
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="first_name">First Name</label>
-                        <input type="text" id="first_name" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.first_name" disabled/>
-                    </div>
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="last_name">Last Name</label>
-                        <input type="text" id="last_name" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.last_name" disabled/>
-                    </div>
-                </div>
-                <div class="flex w-full gap-8">
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="email">Email Address</label>
-                        <input type="text" id="email" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.email" disabled/>
-                    </div>
-                </div>
-                <div class="flex w-full gap-8">
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="medical_license">Medical License Number</label>
-                        <input type="text" id="medical_license" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.medical_license" disabled/>
-                    </div>
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="date_issue">Date Issued</label>
-                        <input type="text" id="date_issue" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.date_issue" disabled/>
-                    </div>
-                </div>
-                <div class="flex w-full gap-8">
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">Primary Specialty</label>
-                        <input type="text" id="primary_specialty" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.primary_specialty" disabled/>
-                    </div>
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="organization">Organization</label>
-                        <input type="text" id="organization" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.organization" disabled/>
-                    </div>
-                </div>
-                <div class="flex w-full gap-8">
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="address1">Address 1</label>
-                        <input type="text" id="address1" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.address1" disabled/>
-                    </div>
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="address2">Address 2</label>
-                        <input type="text" id="address2" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.address2" disabled/>
-                    </div>
-                </div>
-                <div class="flex w-full gap-8">
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="city">City</label>
-                        <input type="text" id="city" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.city" disabled/>
-                    </div>
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="state">State</label>
-                        <input type="text" id="state" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.state" disabled/>
-                    </div>
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="zip">Zip code</label>
-                        <input type="text" id="zip" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.zip" disabled/>
-                    </div>
-                </div>
-                <div class="flex w-full gap-8">
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="phone">Phone Number</label>
-                        <input type="text" id="phone" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.phone" disabled/>
-                    </div>
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="fax">Fax</label>
-                        <input type="text" id="fax" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.fax" disabled/>
-                    </div>
-                </div>
-                <div class="flex w-full gap-8">
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="primary_hospital_affiliation">Primary Hospital Affiliation</label>
-                        <input type="text" id="primary_hospital_affiliation" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.primary_hospital_affiliation" disabled/>
-                    </div>
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="special_interest">Special Interest</label>
-                        <input type="text" id="special_interest" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.special_interest" disabled/>
-                    </div>
-                </div>
-                <div class="flex w-full gap-8">
-                    <div class="flex flex-col flex-1">
-                        <label class="text-md mb-1 text-lightBlack font-medium" for="signature">Signature (print full name)</label>
-                        <input type="text" id="signature" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="physician.signature" disabled/>
-                    </div>
-                </div>
-                <p class="text-darkBlue uppercase"><span class="text-orange">* Please Note:</span> Your Primary Specialty Certification must be from a board recognized by the ABMS or American Board of osteopathic Medical Specialties or Equivalency Board Recognized by The Mbc</p>
             </div>
         </div>
         <div class="flex py-10 bg-white mb-8">
@@ -226,6 +262,10 @@
                                 <p>{{ leadershipPosition.description }}</p>
                             </div>
                         </div>
+                        <div class="flex flex-col w-full">
+                            <textarea placeholder="Comment" rows="4" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.leadership"></textarea>
+                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left" @click="submitComments">Submit</button>
+                        </div>
                     </div>
                     <p class="mt-3 mb-3 font-semibold">OR</p>
                     <p class="text-xl mb-3"><strong>Appointed/Elected Member</strong> (within last three years):  Please check all that apply and include position title and dates below. <i>If dates are not provided, application will not be considered.</i></p>
@@ -247,6 +287,10 @@
                                 <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
                                 <p>{{ electedMember.description }}</p>
                             </div>
+                        </div>
+                        <div class="flex flex-col w-full">
+                            <textarea placeholder="Comment" rows="4" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.elected"></textarea>
+                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left" @click="submitComments">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -272,6 +316,10 @@
                                 <p>{{ teachingActivity.description }}</p>
                             </div>
                         </div>
+                        <div class="flex flex-col w-full">
+                            <textarea placeholder="Comment" rows="4" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.mentoring"></textarea>
+                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left" @click="submitComments">Submit</button>
+                        </div>
                     </div>
                     <p class="mt-3 mb-3 font-semibold">OR</p>
                     <p class="text-xl mb-3"><strong>Delivering Of Medical Education</strong> (within last three year):  Please list the title, date, and if CME/CEU were granted, detailing if the education is a single lecture or recurring class.</p>
@@ -294,6 +342,10 @@
                                 <p>{{ medicalEducation.description }}</p>
                             </div>
                         </div>
+                        <div class="flex flex-col w-full">
+                            <textarea placeholder="Comment" rows="4" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.medical"></textarea>
+                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left" @click="submitComments">Submit</button>
+                        </div>
                     </div>
                     <p class="mt-3 mb-3 font-semibold">OR</p>
                     <p class="text-xl mb-3"><strong>Medical Research/Scientific Advances</strong> (within last three years):  Please check all that apply and include activity information and dates below. <i>If dates are not provided, application will not be considered.</i></p>
@@ -315,6 +367,10 @@
                                 <label class="text-md mb-1 text-lightBlack font-medium">Description</label>
                                 <p>{{ medicalAdvance.description }}</p>
                             </div>
+                        </div>
+                        <div class="flex flex-col w-full">
+                            <textarea placeholder="Comment" rows="4" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.scientific"></textarea>
+                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left" @click="submitComments">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -340,6 +396,10 @@
                                 <p>{{ participationActivity.description }}</p>
                             </div>
                         </div>
+                        <div class="flex flex-col w-full">
+                            <textarea placeholder="Comment" rows="4" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.humanitarian"></textarea>
+                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left" @click="submitComments">Submit</button>
+                        </div>
                     </div>
                 </div>
                 <div class="flex flex-col w-full mt-4">
@@ -364,6 +424,10 @@
                                 <p>{{ otherActivity.description }}</p>
                             </div>
                         </div>
+                        <div class="flex flex-col w-full">
+                            <textarea placeholder="Comment" rows="4" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.others"></textarea>
+                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left" @click="submitComments">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -381,111 +445,135 @@
                         <p>Dr.&nbsp;<input type="text" name="doctor_name" :value="fullname" disabled style="padding:0;border:none;border-bottom:1px solid;background:transparent;"/> has been nominated for the distinction as an Orange County Physician of Excellence which will be published in <span class="text-orange">Orange Coast Magazine's</span> January 2024 issue. As part of the process, each nominee is required to submit evaluations by their peers. You have been selected by the nominee to submit an evaluation on his/her behalf.<br/><br/>Please complete every question or describe why you are not able to comment about the question. Failure to address a question may result in the physician not being considered for the award. Your responses are <span class="text-orange">strictly confidential</span> and will not be shared with the nominated physician.</p>
                     </div>
                     <div class="max-w-[1440px] px-4 w-full mx-auto flex flex-col items-center gap-y-5 mb-8">
-                        <div class="flex flex-col items-center">
-                            <h2 class="text-2xl text-darkBlue uppercase font-semibold">This evaluation must be received by {{deadline}}.</h2>
-                            <p class="text-xl mb-5">Please rate your answer according to these general guidelines.</p>
-                            <p class="text-xl text-darkBlue">1=Poor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3=Satisfactory&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;5=Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7=Very Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10=Excellent</p>
-                        </div>
-                        <div class="flex w-full items-center justify-between gap-8">
-                            <label class="text-md text-lightBlack font-medium flex-1 text-right">Reputation within the community</label>
-                            <div class="flex items-center gap-5 flex-1 shrink-0 relative">
-                                <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
-                                    <span className="flex items-center gap-1">
-                                        <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                    <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((sameSpeciality.rating_community/10)*100)+'%'">
-                                        <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
+                        <div class="flex w-full gap-5">
+                            <div class="flex w-full flex-col gap-y-5 items-center">
+                                <div class="flex flex-col items-center">
+                                    <h2 class="text-2xl text-darkBlue uppercase font-semibold">This evaluation must be received by {{deadline}}.</h2>
+                                    <p class="text-xl mb-5">Please rate your answer according to these general guidelines.</p>
+                                    <p class="text-xl text-darkBlue">1=Poor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3=Satisfactory&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;5=Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7=Very Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10=Excellent</p>
+                                </div>
+                                <div class="flex w-full items-center justify-between gap-8">
+                                    <label class="text-md text-lightBlack font-medium flex-1 text-right">Reputation within the community</label>
+                                    <div class="flex items-center gap-5 flex-1 shrink-0 relative">
+                                        <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
+                                            <span className="flex items-center gap-1">
+                                                <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                            <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((sameSpeciality.rating_community/10)*100)+'%'">
+                                                <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex w-full items-center justify-between gap-8">
+                                    <label class="text-md text-lightBlack font-medium flex-1 text-right">Clinical skills and judgment</label>
+                                    <div class="flex items-center gap-5 flex-1 shrink-0 relative">
+                                        <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
+                                            <span className="flex items-center gap-1">
+                                                <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                            <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((sameSpeciality.rating_judgement/10)*100)+'%'">
+                                                <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex w-full items-center justify-between gap-8">
+                                    <label class="text-md text-lightBlack font-medium flex-1 text-right">Relationships with other physicians and healthcare professionals</label>
+                                    <div class="flex items-center gap-5 flex-1 shrink-0 relative">
+                                        <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
+                                            <span className="flex items-center gap-1">
+                                                <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                            <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((sameSpeciality.rating_healthcare/10)*100)+'%'">
+                                                <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex w-full items-center justify-between gap-8">
+                                    <label class="text-md text-lightBlack font-medium flex-1 text-right">Relationships with patients</label>
+                                    <div class="flex items-center gap-5 flex-1 shrink-0 relative">
+                                        <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
+                                            <span className="flex items-center gap-1">
+                                                <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                            <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((sameSpeciality.rating_patients/10)*100)+'%'">
+                                                <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex w-full items-center justify-between gap-8">
+                                    <label class="text-md text-lightBlack font-medium flex-1 text-right">Leadership skills</label>
+                                    <div class="flex items-center gap-5 flex-1 shrink-0 relative">
+                                        <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
+                                            <span className="flex items-center gap-1">
+                                                <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                            <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((sameSpeciality.rating_skills/10)*100)+'%'">
+                                                <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="flex flex-col w-60 shrink-0">
+                                <textarea placeholder="Comment" rows="10" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.rating_community_same"></textarea>
+                                <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-center" @click="submitComments">Submit</button>
+                            </div>
                         </div>
-                        <div class="flex w-full items-center justify-between gap-8">
-                            <label class="text-md text-lightBlack font-medium flex-1 text-right">Clinical skills and judgment</label>
-                            <div class="flex items-center gap-5 flex-1 shrink-0 relative">
-                                <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
-                                    <span className="flex items-center gap-1">
-                                        <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                    <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((sameSpeciality.rating_judgement/10)*100)+'%'">
-                                        <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
+                        <div class="flex w-full gap-5">
+                            <div class="flex w-full flex-col gap-y-5 items-center">
+                                <div class="flex w-full items-center gap-8 mt-4">
+                                    <label class="text-md text-lightBlack font-medium">Would you trust a family member to this physician's care?</label>
+                                    <div class="flex items-center gap-5 w-40 shrink-0">
+                                        <label class="text-md flex items-center gap-2"><input type="radio" name="is_physician_care" value="1" class="w-5 h-5" :checked="sameSpeciality.is_physician_care == '1'" disabled/> Yes</label>
+                                        <label class="text-md flex items-center gap-2"><input type="radio" name="is_physician_care" value="0" class="w-5 h-5" :checked="sameSpeciality.is_physician_care == '0'" disabled/> No</label>
+                                    </div>
+                                </div>
+                                <div class="flex w-full flex-col flex-1">
+                                    <textarea type="text" id="evaluation_ans1" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="sameSpeciality.evaluation_ans1" disabled></textarea>
+                                </div>
+                                <div class="flex w-full flex-col flex-1">
+                                    <label class="text-md mb-1 text-lightBlack font-medium" for="evaluation_ans2">What makes this doctor an outstanding physician?</label>
+                                    <textarea type="text" id="evaluation_ans2" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="sameSpeciality.evaluation_ans2" disabled></textarea>
                                 </div>
                             </div>
-                        </div>
-                        <div class="flex w-full items-center justify-between gap-8">
-                            <label class="text-md text-lightBlack font-medium flex-1 text-right">Relationships with other physicians and healthcare professionals</label>
-                            <div class="flex items-center gap-5 flex-1 shrink-0 relative">
-                                <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
-                                    <span className="flex items-center gap-1">
-                                        <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                    <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((sameSpeciality.rating_healthcare/10)*100)+'%'">
-                                        <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                </div>
+                            <div class="flex flex-col w-60 shrink-0">
+                                <textarea placeholder="Comment" rows="5" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.evaluation_ans_same"></textarea>
+                                <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-center" @click="submitComments">Submit</button>
                             </div>
-                        </div>
-                        <div class="flex w-full items-center justify-between gap-8">
-                            <label class="text-md text-lightBlack font-medium flex-1 text-right">Relationships with patients</label>
-                            <div class="flex items-center gap-5 flex-1 shrink-0 relative">
-                                <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
-                                    <span className="flex items-center gap-1">
-                                        <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                    <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((sameSpeciality.rating_patients/10)*100)+'%'">
-                                        <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex w-full items-center justify-between gap-8">
-                            <label class="text-md text-lightBlack font-medium flex-1 text-right">Leadership skills</label>
-                            <div class="flex items-center gap-5 flex-1 shrink-0 relative">
-                                <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
-                                    <span className="flex items-center gap-1">
-                                        <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                    <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((sameSpeciality.rating_skills/10)*100)+'%'">
-                                        <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex w-full items-center gap-8 mt-4">
-                            <label class="text-md text-lightBlack font-medium">Would you trust a family member to this physician's care?</label>
-                            <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="is_physician_care" value="1" class="w-5 h-5" :checked="sameSpeciality.is_physician_care == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="is_physician_care" value="0" class="w-5 h-5" :checked="sameSpeciality.is_physician_care == '0'" disabled/> No</label>
-                            </div>
-                        </div>
-                        <div class="flex w-full flex-col flex-1">
-                            <textarea type="text" id="evaluation_ans1" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="sameSpeciality.evaluation_ans1" disabled></textarea>
-                        </div>
-                        <div class="flex w-full flex-col flex-1">
-                            <label class="text-md mb-1 text-lightBlack font-medium" for="evaluation_ans2">What makes this doctor an outstanding physician?</label>
-                            <textarea type="text" id="evaluation_ans2" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="sameSpeciality.evaluation_ans2" disabled></textarea>
                         </div>
                     </div>
                     <div class="max-w-[1440px] px-4 w-full mx-auto flex flex-col items-center gap-y-5">
                         <h2 class="text-2xl text-darkBlue uppercase font-semibold text-center">The information below is required in order for your evaluation to be considered</h2>
-                        <div class="flex w-full gap-8">
-                            <div class="flex flex-col flex-1">
-                                <label class="text-md mb-1 text-lightBlack font-medium" for="reviewer_name">Name</label>
-                                <input type="text" id="reviewer_name" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="sameSpeciality.reviewer_name" disabled/>
+                        <div class="flex w-full gap-5">
+                            <div class="flex w-full flex-col gap-y-5 items-center">
+                                <div class="flex w-full gap-8">
+                                    <div class="flex flex-col flex-1">
+                                        <label class="text-md mb-1 text-lightBlack font-medium" for="reviewer_name">Name</label>
+                                        <input type="text" id="reviewer_name" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="sameSpeciality.reviewer_name" disabled/>
+                                    </div>
+                                    <div class="flex flex-col flex-1">
+                                        <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">YOUR PRIMARY SPECIALT</label>
+                                        <input type="text" id="primary_specialty" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="sameSpeciality.primary_specialty" disabled/>
+                                    </div>
+                                </div>
+                                <div class="flex w-full gap-8">
+                                    <div class="flex flex-col flex-1">
+                                        <label class="text-md mb-1 text-lightBlack font-medium" for="phone">PHONE NUMBER</label>
+                                        <input type="text" id="phone" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="sameSpeciality.phone" disabled/>
+                                    </div>
+                                    <div class="flex flex-col flex-1">
+                                        <label class="text-md mb-1 text-lightBlack font-medium" for="signature">SIGNATURE</label>
+                                        <input type="text" id="signature" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="sameSpeciality.signature" disabled/>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="flex flex-col flex-1">
-                                <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">YOUR PRIMARY SPECIALT</label>
-                                <input type="text" id="primary_specialty" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="sameSpeciality.primary_specialty" disabled/>
-                            </div>
-                        </div>
-                        <div class="flex w-full gap-8">
-                            <div class="flex flex-col flex-1">
-                                <label class="text-md mb-1 text-lightBlack font-medium" for="phone">PHONE NUMBER</label>
-                                <input type="text" id="phone" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="sameSpeciality.phone" disabled/>
-                            </div>
-                            <div class="flex flex-col flex-1">
-                                <label class="text-md mb-1 text-lightBlack font-medium" for="signature">SIGNATURE</label>
-                                <input type="text" id="signature" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="sameSpeciality.signature" disabled/>
+                            <div class="flex flex-col w-60 shrink-0">
+                                <textarea placeholder="Comment" rows="5" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.doc_name_same"></textarea>
+                                <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-center" @click="submitComments">Submit</button>
                             </div>
                         </div>
                     </div>
@@ -506,111 +594,135 @@
                         <p>Dr.&nbsp;<input type="text" name="doctor_name" :value="fullname" disabled style="padding:0;border:none;border-bottom:1px solid;background:transparent;"/> has been nominated for the distinction as an Orange County Physician of Excellence which will be published in <span class="text-orange">Orange Coast Magazine's</span> January 2024 issue. As part of the process, each nominee is required to submit evaluations by their peers. You have been selected by the nominee to submit an evaluation on his/her behalf.<br/><br/>Please complete every question or describe why you are not able to comment about the question. Failure to address a question may result in the physician not being considered for the award. Your responses are <span class="text-orange">strictly confidential</span> and will not be shared with the nominated physician.</p>
                     </div>
                     <div class="max-w-[1440px] px-4 w-full mx-auto flex flex-col items-center gap-y-5 mb-8">
-                        <div class="flex flex-col items-center">
-                            <h2 class="text-2xl text-darkBlue uppercase font-semibold">This evaluation must be received by {{deadline}}.</h2>
-                            <p class="text-xl mb-5">Please rate your answer according to these general guidelines.</p>
-                            <p class="text-xl text-darkBlue">1=Poor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3=Satisfactory&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;5=Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7=Very Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10=Excellent</p>
-                        </div>
-                        <div class="flex w-full items-center justify-between gap-8">
-                            <label class="text-md text-lightBlack font-medium flex-1 text-right">Reputation within the community</label>
-                            <div class="flex items-center gap-5 flex-1 shrink-0 relative">
-                                <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
-                                    <span className="flex items-center gap-1">
-                                        <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                    <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((differentSpeciality.rating_community/10)*100)+'%'">
-                                        <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
+                        <div class="flex w-full gap-5">
+                            <div class="flex w-full flex-col gap-y-5 items-center">
+                                <div class="flex flex-col items-center">
+                                    <h2 class="text-2xl text-darkBlue uppercase font-semibold">This evaluation must be received by {{deadline}}.</h2>
+                                    <p class="text-xl mb-5">Please rate your answer according to these general guidelines.</p>
+                                    <p class="text-xl text-darkBlue">1=Poor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3=Satisfactory&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;5=Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7=Very Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10=Excellent</p>
+                                </div>
+                                <div class="flex w-full items-center justify-between gap-8">
+                                    <label class="text-md text-lightBlack font-medium flex-1 text-right">Reputation within the community</label>
+                                    <div class="flex items-center gap-5 flex-1 shrink-0 relative">
+                                        <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
+                                            <span className="flex items-center gap-1">
+                                                <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                            <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((differentSpeciality.rating_community/10)*100)+'%'">
+                                                <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex w-full items-center justify-between gap-8">
+                                    <label class="text-md text-lightBlack font-medium flex-1 text-right">Clinical skills and judgment</label>
+                                    <div class="flex items-center gap-5 flex-1 shrink-0 relative">
+                                        <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
+                                            <span className="flex items-center gap-1">
+                                                <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                            <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((differentSpeciality.rating_judgement/10)*100)+'%'">
+                                                <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex w-full items-center justify-between gap-8">
+                                    <label class="text-md text-lightBlack font-medium flex-1 text-right">Relationships with other physicians and healthcare professionals</label>
+                                    <div class="flex items-center gap-5 flex-1 shrink-0 relative">
+                                        <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
+                                            <span className="flex items-center gap-1">
+                                                <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                            <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((differentSpeciality.rating_healthcare/10)*100)+'%'">
+                                                <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex w-full items-center justify-between gap-8">
+                                    <label class="text-md text-lightBlack font-medium flex-1 text-right">Relationships with patients</label>
+                                    <div class="flex items-center gap-5 flex-1 shrink-0 relative">
+                                        <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
+                                            <span className="flex items-center gap-1">
+                                                <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                            <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((differentSpeciality.rating_patients/10)*100)+'%'">
+                                                <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex w-full items-center justify-between gap-8">
+                                    <label class="text-md text-lightBlack font-medium flex-1 text-right">Leadership skills</label>
+                                    <div class="flex items-center gap-5 flex-1 shrink-0 relative">
+                                        <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
+                                            <span className="flex items-center gap-1">
+                                                <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                            <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((differentSpeciality.rating_skills/10)*100)+'%'">
+                                                <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="flex flex-col w-60 shrink-0">
+                                <textarea placeholder="Comment" rows="10" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.rating_community_different"></textarea>
+                                <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-center" @click="submitComments">Submit</button>
+                            </div>
                         </div>
-                        <div class="flex w-full items-center justify-between gap-8">
-                            <label class="text-md text-lightBlack font-medium flex-1 text-right">Clinical skills and judgment</label>
-                            <div class="flex items-center gap-5 flex-1 shrink-0 relative">
-                                <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
-                                    <span className="flex items-center gap-1">
-                                        <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                    <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((differentSpeciality.rating_judgement/10)*100)+'%'">
-                                        <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
+                        <div class="flex w-full gap-5">
+                            <div class="flex w-full flex-col gap-y-5 items-center">
+                                <div class="flex w-full items-center gap-8 mt-4">
+                                    <label class="text-md text-lightBlack font-medium">Would you trust a family member to this physician's care?</label>
+                                    <div class="flex items-center gap-5 w-40 shrink-0">
+                                        <label class="text-md flex items-center gap-2"><input type="radio" name="is_physician_care" value="1" class="w-5 h-5" :checked="differentSpeciality.is_physician_care == '1'" disabled/> Yes</label>
+                                        <label class="text-md flex items-center gap-2"><input type="radio" name="is_physician_care" value="0" class="w-5 h-5" :checked="differentSpeciality.is_physician_care == '0'" disabled/> No</label>
+                                    </div>
+                                </div>
+                                <div class="flex w-full flex-col flex-1">
+                                    <textarea type="text" id="evaluation_ans1" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="differentSpeciality.evaluation_ans1" disabled></textarea>
+                                </div>
+                                <div class="flex w-full flex-col flex-1">
+                                    <label class="text-md mb-1 text-lightBlack font-medium" for="evaluation_ans2">What makes this doctor an outstanding physician?</label>
+                                    <textarea type="text" id="evaluation_ans2" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="differentSpeciality.evaluation_ans2" disabled></textarea>
                                 </div>
                             </div>
-                        </div>
-                        <div class="flex w-full items-center justify-between gap-8">
-                            <label class="text-md text-lightBlack font-medium flex-1 text-right">Relationships with other physicians and healthcare professionals</label>
-                            <div class="flex items-center gap-5 flex-1 shrink-0 relative">
-                                <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
-                                    <span className="flex items-center gap-1">
-                                        <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                    <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((differentSpeciality.rating_healthcare/10)*100)+'%'">
-                                        <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                </div>
+                            <div class="flex flex-col w-60 shrink-0">
+                                <textarea placeholder="Comment" rows="5" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.evaluation_ans_different"></textarea>
+                                <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-center" @click="submitComments">Submit</button>
                             </div>
-                        </div>
-                        <div class="flex w-full items-center justify-between gap-8">
-                            <label class="text-md text-lightBlack font-medium flex-1 text-right">Relationships with patients</label>
-                            <div class="flex items-center gap-5 flex-1 shrink-0 relative">
-                                <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
-                                    <span className="flex items-center gap-1">
-                                        <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                    <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((differentSpeciality.rating_patients/10)*100)+'%'">
-                                        <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex w-full items-center justify-between gap-8">
-                            <label class="text-md text-lightBlack font-medium flex-1 text-right">Leadership skills</label>
-                            <div class="flex items-center gap-5 flex-1 shrink-0 relative">
-                                <div class="flex items-center gap-5 w-[236px] shrink-0 relative">
-                                    <span className="flex items-center gap-1">
-                                        <svg class="fill-lightBlack shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                    <span className="flex gap-1 items-center absolute overflow-hidden" :style="'width:'+((differentSpeciality.rating_skills/10)*100)+'%'">
-                                        <svg class="fill-orange shrink-0 cursor-pointer" v-for="rating in ratings" :key="rating" viewBox="0 0 24 24" width="20" height="20"><path d="M19.467,23.316,12,17.828,4.533,23.316,7.4,14.453-.063,9H9.151L12,.122,14.849,9h9.213L16.6,14.453Z"></path></svg>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex w-full items-center gap-8 mt-4">
-                            <label class="text-md text-lightBlack font-medium">Would you trust a family member to this physician's care?</label>
-                            <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="is_physician_care" value="1" class="w-5 h-5" :checked="differentSpeciality.is_physician_care == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="is_physician_care" value="0" class="w-5 h-5" :checked="differentSpeciality.is_physician_care == '0'" disabled/> No</label>
-                            </div>
-                        </div>
-                        <div class="flex w-full flex-col flex-1">
-                            <textarea type="text" id="evaluation_ans1" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="differentSpeciality.evaluation_ans1" disabled></textarea>
-                        </div>
-                        <div class="flex w-full flex-col flex-1">
-                            <label class="text-md mb-1 text-lightBlack font-medium" for="evaluation_ans2">What makes this doctor an outstanding physician?</label>
-                            <textarea type="text" id="evaluation_ans2" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="differentSpeciality.evaluation_ans2" disabled></textarea>
                         </div>
                     </div>
                     <div class="max-w-[1440px] px-4 w-full mx-auto flex flex-col items-center gap-y-5">
                         <h2 class="text-2xl text-darkBlue uppercase font-semibold text-center">The information below is required in order for your evaluation to be considered</h2>
-                        <div class="flex w-full gap-8">
-                            <div class="flex flex-col flex-1">
-                                <label class="text-md mb-1 text-lightBlack font-medium" for="reviewer_name">Name</label>
-                                <input type="text" id="reviewer_name" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="differentSpeciality.reviewer_name" disabled/>
+                        <div class="flex w-full gap-5">
+                            <div class="flex w-full flex-col gap-y-5 items-center">
+                                <div class="flex w-full gap-8">
+                                    <div class="flex flex-col flex-1">
+                                        <label class="text-md mb-1 text-lightBlack font-medium" for="reviewer_name">Name</label>
+                                        <input type="text" id="reviewer_name" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="differentSpeciality.reviewer_name" disabled/>
+                                    </div>
+                                    <div class="flex flex-col flex-1">
+                                        <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">YOUR PRIMARY SPECIALT</label>
+                                        <input type="text" id="primary_specialty" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="differentSpeciality.primary_specialty" disabled/>
+                                    </div>
+                                </div>
+                                <div class="flex w-full gap-8">
+                                    <div class="flex flex-col flex-1">
+                                        <label class="text-md mb-1 text-lightBlack font-medium" for="phone">PHONE NUMBER</label>
+                                        <input type="text" id="phone" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="differentSpeciality.phone" disabled/>
+                                    </div>
+                                    <div class="flex flex-col flex-1">
+                                        <label class="text-md mb-1 text-lightBlack font-medium" for="signature">SIGNATURE</label>
+                                        <input type="text" id="signature" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="differentSpeciality.signature" disabled/>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="flex flex-col flex-1">
-                                <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">YOUR PRIMARY SPECIALT</label>
-                                <input type="text" id="primary_specialty" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="differentSpeciality.primary_specialty" disabled/>
-                            </div>
-                        </div>
-                        <div class="flex w-full gap-8">
-                            <div class="flex flex-col flex-1">
-                                <label class="text-md mb-1 text-lightBlack font-medium" for="phone">PHONE NUMBER</label>
-                                <input type="text" id="phone" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="differentSpeciality.phone" disabled/>
-                            </div>
-                            <div class="flex flex-col flex-1">
-                                <label class="text-md mb-1 text-lightBlack font-medium" for="signature">SIGNATURE</label>
-                                <input type="text" id="signature" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="differentSpeciality.signature" disabled/>
+                            <div class="flex flex-col w-60 shrink-0">
+                                <textarea placeholder="Comment" rows="5" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.doc_name_different"></textarea>
+                                <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-center" @click="submitComments">Submit</button>
                             </div>
                         </div>
                     </div>

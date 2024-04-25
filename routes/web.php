@@ -72,4 +72,5 @@ Route::group(["middleware" => "role:committee"],function(){
     Route::get("/remarks/all",[MemberController::class,"getAllRemarks"])->name("remarks.all");
     Route::get("/nomination/details",[MemberController::class,"complete"])->name("remarks.complete");
     Route::post("/remarks/save",[MemberController::class,"save"])->name("remarks.save");
+    Route::post("/remarks/comments",[MemberController::class,"comments"])->name("remarks.comments");
 });
