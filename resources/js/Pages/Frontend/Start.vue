@@ -46,10 +46,11 @@
                 try{
                     axios.post($vm.route("check-application-via-license"),{license: $vm.license}).then(({data}) => {
                         document.getElementById("rt-custom-loader").style.display = "none";
-                        $vm.showPopup = false;
                         if(data.isAppSubmitted){
+                            $vm.showPopup = false;
                             $vm.$inertia.visit(route('invite'));
                         }else{
+                            $vm.showPopup = false;
                             $vm.isFound = data.isFound;
                             $vm.isSubmit = true;
                         }
