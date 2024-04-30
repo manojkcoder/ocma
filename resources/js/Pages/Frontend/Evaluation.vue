@@ -72,25 +72,9 @@
                     newError["evaluation_ans2"] = "Required";
                     positionFocus = positionFocus || "evaluation_ans2";
                 }
-                if(!$form.rating_community){
-                    newError["rating_community"] = "Required";
-                    positionFocus = positionFocus || "rating_community";
-                }
-                if(!$form.rating_judgement){
-                    newError["rating_judgement"] = "Required";
-                    positionFocus = positionFocus || "rating_judgement";
-                }
-                if(!$form.rating_healthcare){
-                    newError["rating_healthcare"] = "Required";
-                    positionFocus = positionFocus || "rating_healthcare";
-                }
-                if(!$form.rating_patients){
-                    newError["rating_patients"] = "Required";
-                    positionFocus = positionFocus || "rating_patients";
-                }
-                if(!$form.rating_skills){
-                    newError["rating_skills"] = "Required";
-                    positionFocus = positionFocus || "rating_skills";
+                if(!$form.rating_community || !$form.rating_judgement || !$form.rating_healthcare || !$form.rating_patients || !$form.rating_skills){
+                    newError["rating"] = "Required";
+                    positionFocus = positionFocus || "rating";
                 }
                 this.errors = newError;
                 if(positionFocus){
@@ -230,6 +214,7 @@
                             </div>
                         </div>
                     </div>
+                    <label class="flex mt-1 text-sm leading-1 text-red" v-if="hasValidationError(errors,'rating')">{{ validationError(errors,'rating') }}</label>
                     <div class="flex w-full items-center gap-8 mt-4">
                         <label class="text-md text-lightBlack font-medium">Would you trust a family member to this physician's care?</label>
                         <div class="flex items-center gap-5 w-40 shrink-0">

@@ -39,6 +39,7 @@
                     evaluation_ans_different: this.physician.comments && this.physician.comments.evaluation_ans_different || "",
                     doc_name_different: this.physician.comments && this.physician.comments.doc_name_different || ""
                 },
+                errors: [],
                 ratings: [1,2,3,4,5,6,7,8,9,10],
                 fullname: this.physician ? ((this.physician.first_name || '') + ' ' + (this.physician.last_name || '')) : '',
                 deadline: moment(deadline).format("MMM DD, YYYY")
@@ -46,6 +47,31 @@
         },
         methods: {
             onSubmit: function(){
+                if(!this.validate()){
+                    return;
+                }
+                this.handleSubmit();
+            },
+            validate: function(){
+                const newError = {};
+                let positionFocus = "";
+                if(this.form.flag1 === "" || this.form.flag2 === "" || this.form.flag3 === "" || this.form.flag4 === "" || this.form.flag5 === "" || this.form.flag6 === ""){
+                    newError["flags"] = "Required";
+                    positionFocus = positionFocus || "flags";
+                }
+                this.errors = newError;
+                if(positionFocus){
+                    if(document.getElementById(positionFocus)){
+                        let textbox = document.getElementById(positionFocus);
+                        if(textbox){
+                            textbox.focus();
+                        }
+                    }
+                    return false;
+                }
+                return true;
+            },
+            handleSubmit: function(){
                 let $vm = this;
                 try{
                     document.getElementById("rt-custom-loader").style.display = "block";
@@ -264,7 +290,7 @@
                         </div>
                         <div class="flex flex-col w-full">
                             <textarea placeholder="Comment" rows="4" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.leadership"></textarea>
-                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left" @click="submitComments">Submit</button>
+                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left w-40" @click="submitComments">Submit</button>
                         </div>
                     </div>
                     <p class="mt-3 mb-3 font-semibold">OR</p>
@@ -290,7 +316,7 @@
                         </div>
                         <div class="flex flex-col w-full">
                             <textarea placeholder="Comment" rows="4" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.elected"></textarea>
-                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left" @click="submitComments">Submit</button>
+                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left w-40" @click="submitComments">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -318,7 +344,7 @@
                         </div>
                         <div class="flex flex-col w-full">
                             <textarea placeholder="Comment" rows="4" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.mentoring"></textarea>
-                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left" @click="submitComments">Submit</button>
+                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left w-40" @click="submitComments">Submit</button>
                         </div>
                     </div>
                     <p class="mt-3 mb-3 font-semibold">OR</p>
@@ -344,7 +370,7 @@
                         </div>
                         <div class="flex flex-col w-full">
                             <textarea placeholder="Comment" rows="4" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.medical"></textarea>
-                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left" @click="submitComments">Submit</button>
+                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left w-40" @click="submitComments">Submit</button>
                         </div>
                     </div>
                     <p class="mt-3 mb-3 font-semibold">OR</p>
@@ -370,7 +396,7 @@
                         </div>
                         <div class="flex flex-col w-full">
                             <textarea placeholder="Comment" rows="4" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.scientific"></textarea>
-                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left" @click="submitComments">Submit</button>
+                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left w-40" @click="submitComments">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -398,7 +424,7 @@
                         </div>
                         <div class="flex flex-col w-full">
                             <textarea placeholder="Comment" rows="4" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.humanitarian"></textarea>
-                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left" @click="submitComments">Submit</button>
+                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left w-40" @click="submitComments">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -426,7 +452,7 @@
                         </div>
                         <div class="flex flex-col w-full">
                             <textarea placeholder="Comment" rows="4" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="comments.others"></textarea>
-                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left" @click="submitComments">Submit</button>
+                            <button type="button" class="rounded-lg bg-darkBlue text-white px-5 py-2 text-md uppercase font-medium mt-4 self-left w-40" @click="submitComments">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -845,6 +871,7 @@
                     </div>
                     <input class="flex-1 text-base" placeholder="Comment" v-model="form.description6"/>
                 </div>
+                <label class="flex mt-1 text-sm leading-1 text-red" v-if="hasValidationError(errors,'flags')">{{ validationError(errors,'flags') }}</label>
                 <button class="rounded-lg bg-darkBlue text-white px-8 py-2 text-md uppercase font-medium mt-8">Submit</button>
             </form>
         </div>

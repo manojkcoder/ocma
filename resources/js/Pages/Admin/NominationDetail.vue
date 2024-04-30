@@ -16,6 +16,7 @@
                     flag6: (this.adminRemark ? (this.adminRemark.flag6 == 1 ? 1 : 0) : ''),
                     flag7: (this.adminRemark ? (this.adminRemark.flag7 == 1 ? 1 : 0) : '')
                 },
+                errors: [],
                 ratings: [1,2,3,4,5,6,7,8,9,10],
                 fullname: this.physician ? ((this.physician.first_name || '') + ' ' + (this.physician.last_name || '')) : '',
                 deadline: moment(deadline).format("MMM DD, YYYY")
@@ -27,7 +28,32 @@
             }
         },
         methods: {
-            adminFormSubmit: function(){
+            onSubmit: function(){
+                if(!this.validate()){
+                    return;
+                }
+                this.handleSubmit();
+            },
+            validate: function(){
+                const newError = {};
+                let positionFocus = "";
+                if(this.adminForm.flag1 === "" || this.adminForm.flag2 === "" || this.adminForm.flag3 === "" || this.adminForm.flag4 === "" || this.adminForm.flag5 === "" || this.adminForm.flag6 === "" || this.adminForm.flag7 === ""){
+                    newError["flags"] = "Required";
+                    positionFocus = positionFocus || "flags";
+                }
+                this.errors = newError;
+                if(positionFocus){
+                    if(document.getElementById(positionFocus)){
+                        let textbox = document.getElementById(positionFocus);
+                        if(textbox){
+                            textbox.focus();
+                        }
+                    }
+                    return false;
+                }
+                return true;
+            },
+            handleSubmit: function(){
                 let $vm = this;
                 try{
                     document.getElementById("rt-custom-loader").style.display = "block";
@@ -619,7 +645,7 @@
         </div>
         <div class="flex items-center justify-center bg-darkBlue text-white text-xl font-semibold px-5 py-3">Evaluation By Admin</div>
         <div class="flex flex-col py-8 bg-gray">
-            <form @submit.prevent="adminFormSubmit">
+            <form @submit.prevent="onSubmit">
                 <div class="max-w-[1440px] px-4 w-full mx-auto flex flex-col items-center gap-y-3 mb-8">
                     <div class="w-full flex gap-5">
                         <div class="flex flex-1 w-full items-start gap-8 mt-4">
@@ -679,6 +705,7 @@
                         </div>
                         <div class="flex flex-1 w-full"></div>
                     </div>
+                    <label class="flex mt-1 text-sm leading-1 text-red" v-if="hasValidationError(errors,'flags')">{{ validationError(errors,'flags') }}</label>
                     <button class="rounded-lg bg-darkBlue text-white px-8 py-2 text-md uppercase font-medium mt-10">Submit</button>
                 </div>
             </form>
