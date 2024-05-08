@@ -163,7 +163,7 @@ class FrontendController extends Controller
             "link" => route("evaluation") . "?id=".$encodedId."&type=".base64_encode($request->specialty),
             "subject" => "Please Complete - OCMA Physicians of Excellence Physician Evaluation Form"
         ];
-        $emails = explode("\n",$request->emails);
+        $emails = explode(",",$request->emails);
         if(count($emails)){
             $data["to_address"] = $emails;
             InviteEmailJob::dispatch($data);
