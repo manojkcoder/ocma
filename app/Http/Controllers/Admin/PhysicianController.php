@@ -22,7 +22,7 @@ class PhysicianController extends Controller
         $length = $request->length ? $request->length : 10;
         $search = $request->search ? $request->search : "";
         $formStatus = $request->status ? $request->status : "submitted";
-        $physicians = Physician::with("attachments")->where("form_status",$formStatus)->orderBy("id","desc");
+        $physicians = Physician::with("attachments")->where("form_status",$formStatus)->orderBy("last_name","asc");
         if(!empty($search)){
             $physicians = $physicians->where(function($query) use($search){
                 $query->where("first_name","LIKE","%{$search}%")
