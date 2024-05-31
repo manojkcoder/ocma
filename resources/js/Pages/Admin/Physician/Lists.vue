@@ -228,7 +228,7 @@
                 <a :href="route('physicians.saved')" class="flex px-4 py-2 bg-darkBlue text-white text-base rounded-md">Saved Applications</a>
                 <a :href="route('committees')" class="flex px-4 py-2 bg-darkBlue text-white text-base rounded-md">Committee Members</a>
             </div>
-            <!-- <v-text-field v-model="search" label="Search by Name, Email, and Medical license number" single-line hide-details></v-text-field> -->
+            <v-text-field v-model="search" label="Search by Name, Email, and Medical license number" single-line hide-details></v-text-field>
             <v-data-table-server
                 v-model:items-per-page="length"
                 :headers="headers"

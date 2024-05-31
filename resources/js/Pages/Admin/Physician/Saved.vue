@@ -64,7 +64,7 @@
                 </a>
             </div>
             <h2 class="text-2xl text-lightBlack uppercase font-medium leading-7 mb-6 text-center">Saved Application</h2>
-            <!-- <v-text-field v-model="search" label="Search by Name, Email, and Medical license number" single-line hide-details></v-text-field> -->
+            <v-text-field v-model="search" label="Search by Name, Email, and Medical license number" single-line hide-details></v-text-field>
             <v-data-table-server
                 v-model:items-per-page="length"
                 :headers="headers"

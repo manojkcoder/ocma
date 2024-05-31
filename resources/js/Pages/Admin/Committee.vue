@@ -195,7 +195,7 @@
             <div class="w-full flex justify-end gap-3 mb-6">
                 <button class="flex px-4 py-2 bg-darkBlue text-white text-base rounded-md" @click="handlePopup(true)">Add Committee Member</button>
             </div>
-            <!-- <v-text-field v-model="search" label="Search by Name, Email, and Phone number" single-line hide-details></v-text-field> -->
+            <v-text-field v-model="search" label="Search by Name, Email, and Phone number" single-line hide-details></v-text-field>
             <v-data-table-server
                 v-model:items-per-page="length"
                 :headers="headers"
