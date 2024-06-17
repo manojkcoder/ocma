@@ -4,7 +4,7 @@
     export default {
         props: ['physician','hasRating','nominationId','type'],
         data(){
-            let deadline = import.meta.env.VITE_DEADLINE;
+            let deadline = import.meta.env.VITE_EVAL_DEADLINE;
             let endTime = moment(deadline).unix();
             let nowTime = moment().unix();
             let hasExpired = ((nowTime >= endTime) ? true : false);
