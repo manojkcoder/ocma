@@ -1,10 +1,11 @@
 <script>
     import axios from "axios";
     export default {
-        props: ["memberRating","id","type"],
+        props: ["memberRating","id","type","physicians"],
         data(){
             return {
                 form: {
+                    review_id: this.memberRating.id,
                     physician_id: this.id,
                     type: this.type,
                     primary_specialty: this.memberRating ? this.memberRating.primary_specialty : '',
@@ -83,9 +84,15 @@
                     <h2 class="text-xl text-lightBlack text-center font-medium">Evalution Specialty Edit</h2>
                     <div class="flex flex-1 flex-col w-full">
                         <label class="flex-1 text-md text-lightBlack font-medium mb-2">Specialty Type</label>
-                        <select :value="type" class="flex-1 w-full text-lightBlack border border-lightBlack rounded-md" disabled>
+                        <select v-model="form.type" class="flex-1 w-full text-lightBlack border border-lightBlack rounded-md">
                             <option value="same">Same</option>
                             <option value="different">Different</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-1 flex-col w-full">
+                        <label class="flex-1 text-md text-lightBlack font-medium mb-2">Physician</label>
+                        <select v-model="form.physician_id" class="flex-1 w-full text-lightBlack border border-lightBlack rounded-md">
+                            <option v-for="physician in physicians" :value="physician.id">{{ physician.last_name +", "+ physician.first_name + " - " + physician.medical_license + "("+physician.id+")" }}</option>
                         </select>
                     </div>
                     <div class="flex flex-1 flex-col w-full">

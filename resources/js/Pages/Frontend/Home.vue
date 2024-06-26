@@ -5,6 +5,7 @@
         props: ['license'],
         data(){
             let deadline = import.meta.env.VITE_DEADLINE;
+            let visible_deadline = import.meta.env.VITE_VISIBLE_DEADLINE;
             let endTime = moment(deadline).unix();
             let nowTime = moment().unix();
             let hasExpired = ((nowTime >= endTime) ? true : false);
@@ -44,6 +45,7 @@
                 },
                 errors: [],
                 deadline: moment(deadline).format("MMM DD, YYYY"),
+                visible_deadline: moment(visible_deadline).format("MMM DD, YYYY"),
                 hasExpired: hasExpired,
                 maxDate: moment().format("YYYY-MM-DD")
             }

@@ -10,6 +10,7 @@
                     {title: 'Last Name',key: 'last_name',sortable: false},
                     {title: 'Email',key: 'email',sortable: false},
                     {title: 'Medical License No.',key: 'medical_license',sortable: false},
+                    {title: 'Reivews',key: 'reivews',sortable: false,width:"180px"},
                     {title: 'Action',key: '',sortable: false,width: "150px"},
                 ],
                 search: '',
@@ -81,6 +82,20 @@
                         <td>{{item.last_name ? ucwords(item.last_name) : ''}}</td>
                         <td>{{item.email}}</td>
                         <td>{{item.medical_license}}</td>
+                        <td>
+                            <template v-if="item.sameReview">
+                                <a :href="route('evaluate-details',{id: item.id,type: 'same'})" target="_blank" class="flex hover:underline mb-1">Same Spl.</a>
+                                <span class="inline-flex cursor-pointer text-red hover:underline mb-1" @click="handleDeleteEvaluation(item.id,'same')">Delete</span>
+                                <a :href="route('change-evaluation',{id: item.id,type: 'same'})" target="_blank" class="inline-flex ml-2">Edit</a>
+                            </template>
+                            <a v-else :href="route('upload-evaluation',{id: item.id,type: 'same'})" target="_blank" class="inline-flex items-center justify-center px-3 py-2 bg-darkBlue text-white text-sm rounded-md mt-1 mb-1">Upload(S)</a><br/>
+                            <template v-if="item.differentReview">
+                                <a :href="route('evaluate-details',{id: item.id,type: 'different'})" target="_blank" class="flex hover:underline mb-1">Different Spl.</a>
+                                <span class="inline-flex cursor-pointer text-red hover:underline mb-1" @click="handleDeleteEvaluation(item.id,'different')">Delete</span>
+                                <a :href="route('change-evaluation',{id: item.id,type: 'different'})" target="_blank" class="inline-flex ml-2">Edit</a>
+                            </template>
+                            <a v-else :href="route('upload-evaluation',{id: item.id,type: 'different'})" target="_blank" class="inline-flex items-center justify-center px-3 py-2 bg-darkBlue text-white text-sm rounded-md mb-1">Upload(D)</a>
+                        </td>
                         <td>
                             <div class="flex items-center gap-3">
                                 <a :href="route('nomination-details',{id: item.id})" class="flex px-4 py-2 bg-darkBlue text-white text-base rounded-md">View</a>

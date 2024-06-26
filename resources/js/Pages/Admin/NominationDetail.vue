@@ -5,6 +5,7 @@
         props: ["physician","sameSpeciality","differentSpeciality","adminRemark","member1","member2","member1Remark","member2Remark","print"],
         data(){
             let deadline = import.meta.env.VITE_DEADLINE;
+            let visible_deadline = import.meta.env.VITE_VISIBLE_DEADLINE;
             return {
                 adminForm: {
                     physician_id: this.physician.id,
@@ -19,7 +20,8 @@
                 errors: [],
                 ratings: [1,2,3,4,5,6,7,8,9,10],
                 fullname: this.physician ? ((this.physician.first_name || '') + ' ' + (this.physician.last_name || '')) : '',
-                deadline: moment(deadline).format("MMM DD, YYYY")
+                deadline: moment(deadline).format("MMM DD, YYYY"),
+                visible_deadline: moment(visible_deadline).format("MMM DD, YYYY")
             }
         },
         mounted(){
@@ -407,7 +409,7 @@
                     </div>
                     <div class="max-w-[1440px] px-4 w-full mx-auto flex flex-col items-center gap-y-5 mb-8">
                         <div class="flex flex-col items-center">
-                            <h2 class="text-2xl text-darkBlue uppercase font-semibold">This evaluation must be received by {{deadline}}.</h2>
+                            <h2 class="text-2xl text-darkBlue uppercase font-semibold">This evaluation must be received by {{visible_deadline}}.</h2>
                             <p class="text-xl mb-5">Please rate your answer according to these general guidelines.</p>
                             <p class="text-xl text-darkBlue">1=Poor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3=Satisfactory&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;5=Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7=Very Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10=Excellent</p>
                         </div>
@@ -499,7 +501,7 @@
                                 <input type="text" id="reviewer_name" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="sameSpeciality.reviewer_name" disabled/>
                             </div>
                             <div class="flex flex-col flex-1">
-                                <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">YOUR PRIMARY SPECIALT</label>
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">YOUR PRIMARY SPECIALTY</label>
                                 <input type="text" id="primary_specialty" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="sameSpeciality.primary_specialty" disabled/>
                             </div>
                         </div>
@@ -532,7 +534,7 @@
                     </div>
                     <div class="max-w-[1440px] px-4 w-full mx-auto flex flex-col items-center gap-y-5 mb-8">
                         <div class="flex flex-col items-center">
-                            <h2 class="text-2xl text-darkBlue uppercase font-semibold">This evaluation must be received by {{deadline}}.</h2>
+                            <h2 class="text-2xl text-darkBlue uppercase font-semibold">This evaluation must be received by {{visible_deadline}}.</h2>
                             <p class="text-xl mb-5">Please rate your answer according to these general guidelines.</p>
                             <p class="text-xl text-darkBlue">1=Poor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3=Satisfactory&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;5=Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7=Very Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10=Excellent</p>
                         </div>
@@ -624,7 +626,7 @@
                                 <input type="text" id="reviewer_name" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="differentSpeciality.reviewer_name" disabled/>
                             </div>
                             <div class="flex flex-col flex-1">
-                                <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">YOUR PRIMARY SPECIALT</label>
+                                <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">YOUR PRIMARY SPECIALTY</label>
                                 <input type="text" id="primary_specialty" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="differentSpeciality.primary_specialty" disabled/>
                             </div>
                         </div>

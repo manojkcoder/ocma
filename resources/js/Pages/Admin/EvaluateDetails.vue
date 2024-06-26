@@ -4,6 +4,7 @@
         props: ['physician','memberRating','type'],
         data(){
             let deadline = import.meta.env.VITE_DEADLINE;
+            let visible_deadline = import.meta.env.VITE_VISIBLE_DEADLINE;
             let endTime = moment(deadline).unix();
             let nowTime = moment().unix();
             let hasExpired = ((nowTime >= endTime) ? true : false);
@@ -11,6 +12,7 @@
                 ratings: [1,2,3,4,5,6,7,8,9,10],
                 fullname: this.physician ? ((this.physician.first_name || '') + ' ' + (this.physician.last_name || '')) : '',
                 deadline: moment(deadline).format("MMM DD, YYYY"),
+                visible_deadline: moment(visible_deadline).format("MMM DD, YYYY"),
                 hasExpired: hasExpired
             }
         },
@@ -55,7 +57,7 @@
                     <div class="flex py-10 bg-gray">
                         <div class="max-w-[1170px] w-full mx-auto flex flex-col items-center gap-y-5">
                             <div class="flex flex-col items-center">
-                                <h2 class="text-2xl text-darkBlue uppercase font-semibold">This evaluation must be received by {{deadline}}.</h2>
+                                <h2 class="text-2xl text-darkBlue uppercase font-semibold">This evaluation must be received by {{visible_deadline}}.</h2>
                                 <p class="text-xl mb-5">Please rate your answer according to these general guidelines.</p>
                                 <p class="text-xl text-darkBlue">1=Poor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3=Satisfactory&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;5=Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7=Very Good&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10=Excellent</p>
                             </div>
@@ -149,7 +151,7 @@
                                     <input type="text" id="reviewer_name" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="memberRating.reviewer_name" disabled/>
                                 </div>
                                 <div class="flex flex-col flex-1">
-                                    <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">YOUR PRIMARY SPECIALT</label>
+                                    <label class="text-md mb-1 text-lightBlack font-medium" for="primary_specialty">YOUR PRIMARY SPECIALTY</label>
                                     <input type="text" id="primary_specialty" class="w-full text-lightBlack border border-lightBlack rounded-md" v-model="memberRating.primary_specialty" disabled/>
                                 </div>
                             </div>

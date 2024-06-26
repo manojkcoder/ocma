@@ -74,19 +74,26 @@ class AdminController extends Controller
     }
     public function changeEvaluation(Request $request,$id,$type){
         $memberRating = Review::where(["physician_id" => $id,"type" => $type])->first();
+        $physicians = Physician::select(['medical_license', 'first_name', 'last_name', 'id'])->orderBy('last_name')->get();
         if(empty($memberRating)){
             return Redirect::route("admin");
         }
-        return Inertia::render("Admin/ChangeEvaluation",compact("id","memberRating","type"));
+        return Inertia::render("Admin/ChangeEvaluation",compact("id","memberRating","type","physicians"));
     }
     public function updateChangeEvaluation(Request $request){
-        $memberRating = Review::where(["physician_id" => $request->physician_id,"type" => $request->type])->first();
+        $memberRating = Review::find($request->review_id);
         if(empty($memberRating)){
             return json_encode(["status" => "success","message" => "Evaluation not found."]);
         }
+        $existingMemberRating = Review::where(["physician_id" => $request->physician_id,"type" => $request->type])->where('id', '!=', $memberRating->id)->first();
+        if(!empty($existingMemberRating)){
+            return json_encode(["status" => "error","message" => "Evaluation already exists."]);
+        }
+        $memberRating->physician_id = $request->physician_id;
+        $memberRating->type = $request->type;
         $memberRating->primary_specialty = $request->primary_specialty;
         $memberRating->save();
-        return json_encode(["status" => "success","message" => "Date Updated Successfully."]);
+        return json_encode(["status" => "success","message" => "Data Updated Successfully."]);
     }
     public function uploadEvaluation(Request $request,$id,$type){
         return Inertia::render("Admin/UploadEvaluation",compact("id","type"));
