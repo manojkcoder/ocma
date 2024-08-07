@@ -34,11 +34,11 @@ class AdminController extends Controller
         if(!empty($member)){
             if(!empty($member->same_member_id)){
                 $member1 = Committee::where("id",$member->same_member_id)->first();
-                $member1Remark = FinalRemark::with('committee')->where(["physician_id" => $physician->id,"member_id" => $member->same_member_id])->first();
+                $member1Remark = FinalRemark::where(["physician_id" => $physician->id,"member_id" => $member->same_member_id])->first();
             }
             if(!empty($member->different_member_id)){
                 $member2 = Committee::where("id",$member->different_member_id)->first();
-                $member2Remark = FinalRemark::with('committee')->where(["physician_id" => $physician->id,"member_id" => $member->different_member_id])->first();
+                $member2Remark = FinalRemark::where(["physician_id" => $physician->id,"member_id" => $member->different_member_id])->first();
             }
         }
         return Inertia::render("Admin/NominationDetail",compact("physician","sameSpeciality","differentSpeciality","adminRemark","member1","member2","member1Remark","member2Remark","print"));

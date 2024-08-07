@@ -479,8 +479,8 @@
                         <div class="flex w-full items-center gap-8 mt-4">
                             <label class="text-md text-lightBlack font-medium">Would you trust a family member to this physician's care?</label>
                             <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="is_physician_care" value="1" class="w-5 h-5" :checked="sameSpeciality.is_physician_care == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="is_physician_care" value="0" class="w-5 h-5" :checked="sameSpeciality.is_physician_care == '0'" disabled/> No</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="1" class="w-5 h-5" :checked="sameSpeciality.is_physician_care == '1'" disabled/> Yes</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="0" class="w-5 h-5" :checked="sameSpeciality.is_physician_care == '0'" disabled/> No</label>
                             </div>
                         </div>
                         <div class="flex w-full flex-col flex-1">
@@ -604,8 +604,8 @@
                         <div class="flex w-full items-center gap-8 mt-4">
                             <label class="text-md text-lightBlack font-medium">Would you trust a family member to this physician's care?</label>
                             <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="is_physician_care" value="1" class="w-5 h-5" :checked="differentSpeciality.is_physician_care == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="is_physician_care" value="0" class="w-5 h-5" :checked="differentSpeciality.is_physician_care == '0'" disabled/> No</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="1" class="w-5 h-5" :checked="differentSpeciality.is_physician_care == '1'" disabled/> Yes</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="0" class="w-5 h-5" :checked="differentSpeciality.is_physician_care == '0'" disabled/> No</label>
                             </div>
                         </div>
                         <div class="flex w-full flex-col flex-1">
@@ -718,48 +718,48 @@
                         <div class="flex flex-1 w-full items-start gap-8 mt-4">
                             <label class="w-96 text-md text-lightBlack font-medium">MEETS CRITERION 1</label>
                             <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag1" value="1" class="w-5 h-5" :checked="member1Remark.flag1 == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag1" value="0" class="w-5 h-5" :checked="member1Remark.flag1 == '0'" disabled/> No</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="1" class="w-5 h-5" :checked="member1Remark.flag1 == '1'" disabled/> Yes</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="0" class="w-5 h-5" :checked="member1Remark.flag1 == '0'" disabled/> No</label>
                             </div>
                             <p class="flex-1 text-base">{{ member1Remark.description1 }}</p>
                         </div>
                         <div class="flex flex-1 w-full items-start gap-8 mt-4">
                             <label class="w-96 text-md text-lightBlack font-medium">MEETS CRITERION 2</label>
                             <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag2" value="1" class="w-5 h-5" :checked="member1Remark.flag2 == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag2" value="0" class="w-5 h-5" :checked="member1Remark.flag2 == '0'" disabled/> No</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="1" class="w-5 h-5" :checked="member1Remark.flag2 == '1'" disabled/> Yes</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="0" class="w-5 h-5" :checked="member1Remark.flag2 == '0'" disabled/> No</label>
                             </div>
                             <p class="flex-1 text-base">{{ member1Remark.description2 }}</p>
                         </div>
                         <div class="flex flex-1 w-full items-start gap-8 mt-4">
                             <label class="w-96 text-md text-lightBlack font-medium">MEETS CRITERION 3</label>
                             <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag3" value="1" class="w-5 h-5" :checked="member1Remark.flag3 == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag3" value="0" class="w-5 h-5" :checked="member1Remark.flag3 == '0'" disabled/> No</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="1" class="w-5 h-5" :checked="member1Remark.flag3 == '1'" disabled/> Yes</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="0" class="w-5 h-5" :checked="member1Remark.flag3 == '0'" disabled/> No</label>
                             </div>
                             <p class="flex-1 text-base">{{ member1Remark.description3 }}</p>
                         </div>
                         <div class="flex flex-1 w-full items-start gap-8 mt-4">
                             <label class="w-96 text-md text-lightBlack font-medium">MEETS CRITERION 4</label>
                             <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag4" value="1" class="w-5 h-5" :checked="member1Remark.flag4 == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag4" value="0" class="w-5 h-5" :checked="member1Remark.flag4 == '0'" disabled/> No</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="1" class="w-5 h-5" :checked="member1Remark.flag4 == '1'" disabled/> Yes</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="0" class="w-5 h-5" :checked="member1Remark.flag4 == '0'" disabled/> No</label>
                             </div>
                             <p class="flex-1 text-base">{{ member1Remark.description4 }}</p>
                         </div>
                         <div class="flex flex-1 w-full items-start gap-8 mt-4">
                             <label class="w-96 text-md text-lightBlack font-medium">MEETS 2 OF FIRST 3 CRITERIA: (criteria 1-3 only)</label>
                             <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag5" value="1" class="w-5 h-5" :checked="member1Remark.flag5 == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag5" value="0" class="w-5 h-5" :checked="member1Remark.flag5 == '0'" disabled/> No</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="1" class="w-5 h-5" :checked="member1Remark.flag5 == '1'" disabled/> Yes</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="0" class="w-5 h-5" :checked="member1Remark.flag5 == '0'" disabled/> No</label>
                             </div>
                             <p class="flex-1 text-base">{{ member1Remark.description5 }}</p>
                         </div>
                         <div class="flex flex-1 w-full items-start gap-8 mt-4">
                             <label class="w-96 text-md text-lightBlack font-medium">MEETS 2 OF 4 CRITERIA: (including #4)</label>
                             <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag6" value="1" class="w-5 h-5" :checked="member1Remark.flag6 == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag6" value="0" class="w-5 h-5" :checked="member1Remark.flag6 == '0'" disabled/> No</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="1" class="w-5 h-5" :checked="member1Remark.flag6 == '1'" disabled/> Yes</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="0" class="w-5 h-5" :checked="member1Remark.flag6 == '0'" disabled/> No</label>
                             </div>
                             <p class="flex-1 text-base">{{ member1Remark.description6 }}</p>
                         </div>
@@ -782,48 +782,48 @@
                         <div class="flex flex-1 w-full items-start gap-8 mt-4">
                             <label class="w-96 text-md text-lightBlack font-medium">MEETS CRITERION 1</label>
                             <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag1" value="1" class="w-5 h-5" :checked="member2Remark.flag1 == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag1" value="0" class="w-5 h-5" :checked="member2Remark.flag1 == '0'" disabled/> No</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="1" class="w-5 h-5" :checked="member2Remark.flag1 == '1'" disabled/> Yes</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="0" class="w-5 h-5" :checked="member2Remark.flag1 == '0'" disabled/> No</label>
                             </div>
                             <p class="flex-1 text-base">{{ member2Remark.description1 }}</p>
                         </div>
                         <div class="flex flex-1 w-full items-start gap-8 mt-4">
                             <label class="w-96 text-md text-lightBlack font-medium">MEETS CRITERION 2</label>
                             <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag2" value="1" class="w-5 h-5" :checked="member2Remark.flag2 == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag2" value="0" class="w-5 h-5" :checked="member2Remark.flag2 == '0'" disabled/> No</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="1" class="w-5 h-5" :checked="member2Remark.flag2 == '1'" disabled/> Yes</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="0" class="w-5 h-5" :checked="member2Remark.flag2 == '0'" disabled/> No</label>
                             </div>
                             <p class="flex-1 text-base">{{ member2Remark.description2 }}</p>
                         </div>
                         <div class="flex flex-1 w-full items-start gap-8 mt-4">
                             <label class="w-96 text-md text-lightBlack font-medium">MEETS CRITERION 3</label>
                             <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag3" value="1" class="w-5 h-5" :checked="member2Remark.flag3 == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag3" value="0" class="w-5 h-5" :checked="member2Remark.flag3 == '0'" disabled/> No</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="1" class="w-5 h-5" :checked="member2Remark.flag3 == '1'" disabled/> Yes</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="0" class="w-5 h-5" :checked="member2Remark.flag3 == '0'" disabled/> No</label>
                             </div>
                             <p class="flex-1 text-base">{{ member2Remark.description3 }}</p>
                         </div>
                         <div class="flex flex-1 w-full items-start gap-8 mt-4">
                             <label class="w-96 text-md text-lightBlack font-medium">MEETS CRITERION 4</label>
                             <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag4" value="1" class="w-5 h-5" :checked="member2Remark.flag4 == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag4" value="0" class="w-5 h-5" :checked="member2Remark.flag4 == '0'" disabled/> No</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="1" class="w-5 h-5" :checked="member2Remark.flag4 == '1'" disabled/> Yes</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="0" class="w-5 h-5" :checked="member2Remark.flag4 == '0'" disabled/> No</label>
                             </div>
                             <p class="flex-1 text-base">{{ member2Remark.description4 }}</p>
                         </div>
                         <div class="flex flex-1 w-full items-start gap-8 mt-4">
                             <label class="w-96 text-md text-lightBlack font-medium">MEETS 2 OF FIRST 3 CRITERIA: (criteria 1-3 only)</label>
                             <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag5" value="1" class="w-5 h-5" :checked="member2Remark.flag5 == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag5" value="0" class="w-5 h-5" :checked="member2Remark.flag5 == '0'" disabled/> No</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="1" class="w-5 h-5" :checked="member2Remark.flag5 == '1'" disabled/> Yes</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="0" class="w-5 h-5" :checked="member2Remark.flag5 == '0'" disabled/> No</label>
                             </div>
                             <p class="flex-1 text-base">{{ member2Remark.description5 }}</p>
                         </div>
                         <div class="flex flex-1 w-full items-start gap-8 mt-4">
                             <label class="w-96 text-md text-lightBlack font-medium">MEETS 2 OF 4 CRITERIA: (including #4)</label>
                             <div class="flex items-center gap-5 w-40 shrink-0">
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag6" value="1" class="w-5 h-5" :checked="member2Remark.flag6 == '1'" disabled/> Yes</label>
-                                <label class="text-md flex items-center gap-2"><input type="radio" name="flag6" value="0" class="w-5 h-5" :checked="member2Remark.flag6 == '0'" disabled/> No</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="1" class="w-5 h-5" :checked="member2Remark.flag6 == '1'" disabled/> Yes</label>
+                                <label class="text-md flex items-center gap-2"><input type="radio" value="0" class="w-5 h-5" :checked="member2Remark.flag6 == '0'" disabled/> No</label>
                             </div>
                             <p class="flex-1 text-base">{{ member2Remark.description6 }}</p>
                         </div>
