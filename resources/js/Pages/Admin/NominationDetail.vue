@@ -777,7 +777,7 @@
             </div>
         </template>
         <template v-if="member2">
-            <div class="flex items-center justify-center bg-darkBlue text-white text-xl font-semibold px-5 py-3">Remarked By Committee Member {{ member1.name }}</div>
+            <div class="flex items-center justify-center bg-darkBlue text-white text-xl font-semibold px-5 py-3">Remarked By Committee Member {{ member2.name }}</div>
             <div class="flex flex-col py-8 bg-gray">
                 <template v-if="member2Remark">
                     <div class="max-w-[1440px] px-4 w-full mx-auto flex flex-col items-center gap-y-3 mb-8">
