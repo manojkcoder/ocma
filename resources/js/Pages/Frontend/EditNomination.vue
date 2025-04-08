@@ -403,7 +403,7 @@
                 </div>
             </div>
         </div>
-        <div class="py-10 px-4 flex items-center justify-center" v-if="hasExpired">
+        <div class="py-10 px-4 flex items-center justify-center" v-if="hasExpired && !isAdminEditing">
             <p class="text-xl font-medium">Registration has been closed.</p>
         </div>
         <form @submit.prevent="handleAutoSave" v-else>
